@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oscar
+  namespace: oscar
+  labels:
+    app: oscar
+spec:
+  selector:
+    matchLabels:
+      app: oscar
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: oscar
+    spec:
+      containers:
+        - name: oscar
+          image: "{{ docker_registry }}/oscar:{{ oscar_version }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oscar
+  namespace: oscar
+spec:
+  type: NodePort
+  ports:
+    - name: endpoint
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: "{{ oscar_port }}"
+  selector:
+    app: oscar

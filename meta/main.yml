@@ -1,0 +1,15 @@
+galaxy_info:
+  role_name: kubeoscar
+  author: alpegon3@upv.es
+  description: Install OSCAR framework using a Kubernetes Cluster
+  company: GRyCAP
+  license: Apache
+  min_ansible_version: 2.0
+  platforms:
+  - name: Ubuntu
+    versions:
+    - xenial
+  galaxy_tags:
+    - kubeoscar
+
+dependencies: []
