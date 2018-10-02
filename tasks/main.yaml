@@ -1,6 +1,9 @@
 ---
+- name: Install dependencies for docker management
+  pip: name=docker-py
+
 - name: Create docker-builder pod, service and namespace
   include: docker-builder.yaml
     
 - name: Create OSCAR pod, service and namespace
-  include: oscar.yaml   
+  include: oscar.yaml
