@@ -19,5 +19,5 @@
 
 - name: Create OSCAR Service
   block:
-    - template: src=oscar.j2 dest=/tmp/oscar.yml
+    - template: src=oscar.j2 dest=/tmp/oscar.yaml
     - command: kubectl apply -f /tmp/oscar.yaml
