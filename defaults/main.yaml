@@ -1,4 +1,5 @@
 oscar_version: "0.0.1-alpha"
 oscar_nodeport: 32112
 docker_registry: "registry.docker-registry"
+docker_builder: "builder.builder"
 openfaas_url: "http://gateway.openfaas:8080"

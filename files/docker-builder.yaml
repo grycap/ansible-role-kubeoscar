@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: builder
+  namespace: builder
+  labels:
+    app: builder
+spec:
+  selector:
+    matchLabels:
+      app: builder
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: builder
+    spec:
+      containers:
+        - name: builder
+          image: docker:dind
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: cert1
+              mountPath: /etc/docker/certs.d/
+            - name: cert2
+              mountPath: /opt/docker_registry/certs/
+      volumes:
+      - name: cert1
+        hostPath:
+          path: /etc/docker/certs.d/
+      - name: cert2
+        hostPath:
+          path: /opt/docker_registry/certs/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: builder
+  namespace: builder
+spec:
+  type: ClusterIP
+  ports:
+    - name: endpoint
+      port: 2375
+      protocol: TCP
+      targetPort: 2375
+  selector:
+    app: builder

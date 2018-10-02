@@ -21,6 +21,8 @@ spec:
           env:
           - name: OPENFAAS_URL
             value: "{{ openfaas_url }}"
+          - name: DOCKER_HOST
+            value: "{{ docker_builder }}"            
 ---
 apiVersion: v1
 kind: Service
