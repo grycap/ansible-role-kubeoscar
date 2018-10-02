@@ -1,41 +1,6 @@
 ---
-- name: Clone OSCAR repo
-  git:
-    repo: 'https://github.com/grycap/oscar'
-    dest: /tmp/oscar
-    version: "{{ oscar_version }}"
-    
-- name: Build an image and push it to a private repo
-  docker_image:
-    path: /tmp/oscar
-    name: "{{ docker_registry }}/oscar"
-    tag: "{{ oscar_version }}"
-    push: yes
-    
-- name: Create docker builder pod, service and namespace
-  block:
-  - name: Copy docker builder namespace yaml
-    copy: src=docker-builder-namespace.yaml dest=/tmp/docker-builder-namespace.yaml
- 
-  - name: Create docker builder namespace
-    command: kubectl apply -f /tmp/docker-builder-namespace.yaml
-
-  - name: Copy docker builder service template
-    template: src=docker-builder.yaml dest=/tmp/docker-builder.yaml
- 
-  - name: Create docker builder Service
-    command: kubectl apply -f /tmp/docker-builder.yaml
+- name: Create docker-builder pod, service and namespace
+  include: docker-builder.yaml
     
 - name: Create OSCAR pod, service and namespace
-  block:
-  - name: Copy OSCAR namespace yaml
-    copy: src=oscar-namespace.yaml dest=/tmp/oscar-namespace.yaml
- 
-  - name: Create OSCAR namespace
-    command: kubectl apply -f /tmp/oscar-namespace.yaml
- 
-  - name: Copy OSCAR service template
-    template: src=oscar.j2 dest=/tmp/oscar.yaml
- 
-  - name: Create OSCAR Service
-    command: kubectl apply -f /tmp/oscar.yaml    
+  include: oscar.yaml   

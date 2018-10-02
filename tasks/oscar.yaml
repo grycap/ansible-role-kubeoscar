@@ -1,0 +1,24 @@
+- name: Clone OSCAR repo
+  git:
+    repo: 'https://github.com/grycap/oscar'
+    dest: /tmp/oscar
+    version: "{{ oscar_version }}"
+    
+- name: Build the OSCAR image and push it to the docker registry
+  docker_image:
+    path: /tmp/oscar
+    name: "{{ docker_registry }}/oscar"
+    tag: "{{ oscar_version }}"
+    push: yes
+
+- name: Copy OSCAR namespace yaml
+  copy: src=oscar-namespace.yaml dest=/tmp/oscar-namespace.yaml
+ 
+- name: Create OSCAR namespace
+  command: kubectl apply -f /tmp/oscar-namespace.yaml
+ 
+- name: Copy OSCAR service template
+  template: src=oscar.j2 dest=/tmp/oscar.yaml
+ 
+- name: Create OSCAR Service
+  command: kubectl apply -f /tmp/oscar.yaml 
