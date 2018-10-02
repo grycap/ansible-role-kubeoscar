@@ -31,6 +31,6 @@ spec:
       port: 8080
       protocol: TCP
       targetPort: 8080
-      nodePort: "{{ oscar_port }}"
+      nodePort: "{{ oscar_port | int }}"
   selector:
     app: oscar

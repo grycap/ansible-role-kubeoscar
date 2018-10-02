@@ -12,12 +12,14 @@
     tag: "{{ oscar_version }}"
     push: yes
     
-- name: Create OSCAR namespace
-  block:
-    - copy: src=oscar-namespace.yaml dest=/tmp/oscar-namespace.yaml
-    - command: kubectl apply -f /tmp/oscar-namespace.yaml
+- block:
+  - name: Copy OSCAR namespace yaml
+    copy: src=oscar-namespace.yaml dest=/tmp/oscar-namespace.yaml
+  - name: Create OSCAR namespace
+    command: kubectl apply -f /tmp/oscar-namespace.yaml
 
-- name: Create OSCAR Service
-  block:
-    - template: src=oscar.j2 dest=/tmp/oscar.yaml
-    - command: kubectl apply -f /tmp/oscar.yaml
+- block:
+  - name: Copy OSCAR service template
+    template: src=oscar.j2 dest=/tmp/oscar.yaml
+  - name: Create OSCAR Service
+    command: kubectl apply -f /tmp/oscar.yaml
