@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: oscar
-          image: "{{ docker_registry }}/oscar:{{ oscar_version }}"
+          image: {{ docker_registry }}/oscar:{{ oscar_version }}
 ---
 apiVersion: v1
 kind: Service
@@ -31,6 +31,6 @@ spec:
       port: 8080
       protocol: TCP
       targetPort: 8080
-      nodePort: "{{ oscar_port | int }}"
+      nodePort: {{ oscar_nodeport }}
   selector:
     app: oscar
