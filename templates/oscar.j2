@@ -18,6 +18,9 @@ spec:
       containers:
         - name: oscar
           image: {{ docker_registry }}/oscar:{{ oscar_version }}
+        env:
+        - name: OPENFAAS_URL
+          value: {{ openfaas_url }}
 ---
 apiVersion: v1
 kind: Service
