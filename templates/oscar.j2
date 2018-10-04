@@ -19,8 +19,18 @@ spec:
         - name: oscar
           image: "{{ docker_registry }}/oscar:{{ oscar_version }}"
           env:
-          - name: OPENFAAS_URL
-            value: "{{ openfaas_url }}"
+          - name: OPENFAAS_ENDPOINT
+            value: "{{ openfaas_url }}:{{ openfaas_port }}"
+          - name: EVENTGATEWAY_CONFIG_ENDPOINT
+            value: "{{ event_gateway_url }}:{{ event_gateway_config_port }}"
+          - name: EVENTGATEWAY_EVENTS_ENDPOINT
+            value: "{{ event_gateway_url }}:{{ event_gateway_events_port }}"            
+          - name: MINIO_ENDPOINT
+            value: "{{ minio_url }}:{{ minio_port }}"
+          - name: MINIO_USER
+            value: "{{ minio_user }}" 
+          - name: MINIO_PASS
+            value: "{{ minio_pass }}"                         
           - name: DOCKER_HOST
             value: "{{ docker_builder }}"            
 ---
