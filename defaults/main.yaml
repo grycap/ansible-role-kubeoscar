@@ -1,4 +1,4 @@
-oscar_version: "0.0.2-alpha"
+oscar_version: "latest"
 oscar_nodeport: 32112
 docker_registry: "registry.docker-registry"
 docker_builder: "builder.builder"
