@@ -32,7 +32,9 @@ spec:
           - name: MINIO_PASS
             value: "{{ minio_pass }}"                         
           - name: DOCKER_HOST
-            value: "{{ docker_builder }}"            
+            value: "{{ docker_builder }}:{{ docker_builder_port }}"
+          - name: DOCKER_REGISTRY
+            value: "{{ docker_registry }}"                 
 ---
 apiVersion: v1
 kind: Service
