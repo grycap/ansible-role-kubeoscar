@@ -1,45 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oscar
+  name: oscar-manager
   namespace: oscar
   labels:
-    app: oscar
+    app: oscar-manager
 spec:
   selector:
     matchLabels:
-      app: oscar
+      app: oscar-manager
   replicas: 1
   template:
     metadata:
       labels:
-        app: oscar
+        app: oscar-manager
     spec:
       containers:
-        - name: oscar
-          image: "grycap/oscar-manager:{{ oscar_version }}"
-          env:
-          - name: OPENFAAS_ENDPOINT
-            value: "{{ openfaas_url }}:{{ openfaas_port }}"
-          - name: EVENTGATEWAY_CONFIG_ENDPOINT
-            value: "{{ event_gateway_url }}:{{ event_gateway_config_port }}"
-          - name: EVENTGATEWAY_EVENTS_ENDPOINT
-            value: "{{ event_gateway_url }}:{{ event_gateway_events_port }}"            
-          - name: MINIO_ENDPOINT
-            value: "{{ minio_url }}:{{ minio_port }}"
-          - name: MINIO_USER
-            value: "{{ minio_user }}" 
-          - name: MINIO_PASS
-            value: "{{ minio_pass }}"                         
-          - name: DOCKER_HOST
-            value: "{{ docker_builder }}:{{ docker_builder_port }}"
-          - name: DOCKER_REGISTRY
-            value: "{{ docker_registry }}"                 
+      - name: oscar-manager
+        image: "grycap/oscar-manager:{{ oscar_version }}"
+        env:
+        - name: OPENFAAS_ENDPOINT
+          value: "{{ openfaas_url }}:{{ openfaas_port }}"
+        - name: EVENTGATEWAY_CONFIG_ENDPOINT
+          value: "{{ event_gateway_url }}:{{ event_gateway_config_port }}"
+        - name: EVENTGATEWAY_EVENTS_ENDPOINT
+          value: "{{ event_gateway_url }}:{{ event_gateway_events_port }}"            
+        - name: MINIO_ENDPOINT
+          value: "{{ minio_url }}:{{ minio_port }}"
+        - name: MINIO_USER
+          value: "{{ minio_user }}" 
+        - name: MINIO_PASS
+          value: "{{ minio_pass }}"                         
+        - name: DOCKER_HOST
+          value: "{{ docker_builder }}:{{ docker_builder_port }}"
+        - name: DOCKER_REGISTRY
+          value: "{{ docker_registry }}"
+        volumeMounts:
+        - name: auth
+          readOnly: true
+          mountPath: "/var/secrets/"
+      volumes:
+      - name: auth
+        secret:
+          secretName: basic-auth
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: oscar
+  name: oscar-manager
   namespace: oscar
 spec:
   type: NodePort
@@ -50,4 +58,4 @@ spec:
       targetPort: 8080
       nodePort: {{ oscar_nodeport }}
   selector:
-    app: oscar
+    app: oscar-manager
