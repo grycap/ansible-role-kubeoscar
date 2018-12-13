@@ -1,8 +1,6 @@
 oscar_version: "latest"
 oscar_nodeport: 32112
 docker_registry: "registry.docker-registry"
-docker_builder: "builder.builder"
-docker_builder_port: 2375
 openfaas_url: "http://gateway.openfaas"
 openfaas_port: "8080"
 event_gateway_url: "http://event-gateway.event-gateway"

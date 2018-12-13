@@ -3,9 +3,15 @@
  
 - name: Create OSCAR namespace
   command: kubectl apply -f /tmp/oscar-namespace.yaml
+
+- name: Copy kaniko-builds namespace yaml
+  copy: src=kaniko-builds-namespace.yaml dest=/tmp/kaniko-builds-namespace.yaml
  
-- name: Copy OSCAR service template
+- name: Create kaniko-builds namespace
+  command: kubectl apply -f /tmp/kaniko-builds-namespace.yaml
+ 
+- name: Copy OSCAR deployment and service template
   template: src=oscar.j2 dest=/tmp/oscar.yaml
  
-- name: Create OSCAR Service
+- name: Create OSCAR deployment and service
   command: kubectl apply -f /tmp/oscar.yaml 
