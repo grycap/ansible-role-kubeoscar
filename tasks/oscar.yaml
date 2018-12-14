@@ -9,6 +9,12 @@
  
 - name: Create kaniko-builds namespace
   command: kubectl apply -f /tmp/kaniko-builds-namespace.yaml
+
+- name: Copy OSCAR RBAC yaml
+  copy: src=oscar-rbac.yaml dest=/tmp/oscar-rbac.yaml
+ 
+- name: Create OSCAR RBAC
+  command: kubectl apply -f /tmp/oscar-rbac.yaml
  
 - name: Copy OSCAR deployment and service template
   template: src=oscar.j2 dest=/tmp/oscar.yaml
