@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: oscar-pv-claim
+  namespace: oscar
+spec:
+  selector:
+    matchLabels:
+      app: oscar-manager
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

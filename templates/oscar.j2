@@ -38,10 +38,15 @@ spec:
         - name: auth
           readOnly: true
           mountPath: "/var/secrets/"
+        - name: kaniko-builds
+          mountPath: /pv/kaniko-builds
       volumes:
       - name: auth
         secret:
           secretName: basic-auth
+      - name: kaniko-builds
+        persistentVolumeClaim:
+          claimName: oscar-pv-claim
 ---
 apiVersion: v1
 kind: Service

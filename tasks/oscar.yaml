@@ -15,6 +15,12 @@
  
 - name: Create OSCAR RBAC
   command: kubectl apply -f /tmp/oscar-rbac.yaml
+
+- name: Copy OSCAR PVC yaml
+  copy: src=oscar-pvc.yaml dest=/tmp/oscar-pvc.yaml
+ 
+- name: Create OSCAR PVC
+  command: kubectl apply -f /tmp/oscar-pvc.yaml
  
 - name: Copy OSCAR deployment and service template
   template: src=oscar.j2 dest=/tmp/oscar.yaml
