@@ -15,6 +15,7 @@ spec:
       labels:
         app: oscar-manager
     spec:
+      serviceAccountName: oscar-controller
       containers:
       - name: oscar-manager
         image: "grycap/oscar-manager:{{ oscar_version }}"
@@ -31,18 +32,21 @@ spec:
           value: "{{ minio_user }}" 
         - name: MINIO_PASS
           value: "{{ minio_pass }}"                         
-        - name: DOCKER_HOST
-          value: "{{ docker_builder }}:{{ docker_builder_port }}"
         - name: DOCKER_REGISTRY
           value: "{{ docker_registry }}"
         volumeMounts:
         - name: auth
           readOnly: true
           mountPath: "/var/secrets/"
+        - name: kaniko-builds
+          mountPath: /pv/kaniko-builds
       volumes:
       - name: auth
         secret:
           secretName: basic-auth
+      - name: kaniko-builds
+        persistentVolumeClaim:
+          claimName: oscar-pv-claim
 ---
 apiVersion: v1
 kind: Service
