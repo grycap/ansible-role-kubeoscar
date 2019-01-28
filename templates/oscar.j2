@@ -47,6 +47,12 @@ spec:
       - name: kaniko-builds
         persistentVolumeClaim:
           claimName: oscar-pv-claim
+{% if master_deploy %}
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+{% endif %}
 ---
 apiVersion: v1
 kind: Service
