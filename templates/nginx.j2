@@ -116,7 +116,7 @@ data:
           proxy_set_header        X-Real-IP $remote_addr;
           proxy_set_header        X-Forwarded-Proto https;
           proxy_set_header        Host $http_host;
-          proxy_set_header        X-Forwarded-Prefix /oscar/manager;
+          proxy_set_header        X-Forwarded-Prefix /oscar;
         }
         location /minioui/ {
           proxy_pass              http://minio-service.minio:9000/;
