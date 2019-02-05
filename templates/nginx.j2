@@ -118,12 +118,16 @@ data:
           proxy_set_header        Host $http_host;
           proxy_set_header        X-Forwarded-Prefix /oscar;
         }
-        location /minioui/ {
-          proxy_pass              http://minio-service.minio:9000/;
-          proxy_set_header Host $host;
-        }
         location /minio/ {
           proxy_pass              http://minio-service.minio:9000/minio/;
+          proxy_set_header Host $host;
+        }
+        location /openfaas/ {
+          proxy_pass              http://gateway-external.openfaas:8080/;
+          proxy_set_header Host $host;
+        }
+        location /ui/ {
+          proxy_pass              http://gateway-external.openfaas:8080/ui/;
           proxy_set_header Host $host;
         }
       }
