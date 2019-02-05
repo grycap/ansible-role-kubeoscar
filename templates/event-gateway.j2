@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-gateway
+  namespace: oscar
+  labels:
+    app: event-gateway
+spec:
+  selector:
+    matchLabels:
+      app: event-gateway
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: event-gateway
+    spec:
+      containers:
+        - name: event-gateway
+          image: serverless/event-gateway:0.9.0
+          args:
+            - "-db-hosts=etcd.event-gateway:2379"
+            - "-log-format=text"
+            - "-log-level=debug"
+          livenessProbe:
+            httpGet:
+              path: "/v1/status"
+              port: 4001
+          readinessProbe:
+            httpGet:
+              path: "/v1/status"
+              port: 4001
+{% if master_deploy %}
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      nodeSelector:
+        node-role.kubernetes.io/master: ''
+{% endif %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-gateway
+  namespace: oscar
+spec:
+  type: NodePort
+  ports:
+    - name: events
+      port: 4000
+      protocol: TCP
+      targetPort: 4000
+      nodePort: 30900
+    - name: config
+      port: 4001
+      protocol: TCP
+      targetPort: 4001
+      nodePort: 30901
+  selector:
+    app: event-gateway
