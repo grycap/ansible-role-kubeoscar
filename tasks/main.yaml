@@ -1,12 +1,12 @@
 ---
 - name: Create Event GateWay 
-  include: eventgateway.yaml
+  include: eventgateway.yml
 
 - name: Create OSCAR pod, service, rbac and namespace
   include: oscar.yaml
 
 - name: Create OSCAR UI
-  include: ui.yaml
+  include: ui.yml
 
 - name: Create Nginx
-  include: nginx.yaml
+  include: nginx.yml
