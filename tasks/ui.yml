@@ -1,0 +1,6 @@
+---
+- name: Create deployment and service
+  block:
+    - template: src=oscarui.j2 dest=/tmp/oscarui.yml
+    - command: kubectl apply -f /tmp/oscarui.yml
+

@@ -1,0 +1,9 @@
+- name: Create etcd statefulset and service
+  block:
+    - template: src=etcd.j2 dest=/tmp/etcd.yaml
+    - command: kubectl apply -f /tmp/etcd.yaml
+
+- name: Create event-gateway deployment and service
+  block:
+    - template: src=event-gateway.j2 dest=/tmp/event-gateway.yaml
+    - command: kubectl apply -f /tmp/event-gateway.yaml

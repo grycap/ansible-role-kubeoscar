@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oscar-ui
+  namespace: oscar
+  labels:
+    app: oscar-ui
+spec:
+  selector:
+    matchLabels:
+      app: oscar-ui
+  replicas: 1      
+  template:
+    metadata:
+      labels:
+        app: oscar-ui
+    spec:
+      containers:
+        - name: oscar-ui
+          image: "grycap/oscar-ui:{{ oscar_ui_version }}"
+          env : 
+            - name: VUE_APP_BACKEND_HOST 
+              value: "{{vue_app_backend_host}}"
+            - name: MINIO_ACCESS_KEY
+              value: "{{ minio_user }}"
+            - name: MINIO_SECRET_KEY
+              value: "{{ minio_pass }}"
+{% if master_deploy %}
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      nodeSelector:
+        node-role.kubernetes.io/master: ''
+{% endif %}
+---  
+apiVersion: v1
+kind: Service
+metadata:
+  name: oscar-ui
+  namespace: oscar
+spec:
+  type: NodePort
+  ports:
+    - name: endpoint
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+      nodePort: {{ oscar_ui_nodeport }} 
+  selector:
+    app: oscar-ui
