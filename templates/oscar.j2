@@ -34,6 +34,8 @@ spec:
           value: "{{ minio_pass }}"                         
         - name: DOCKER_REGISTRY
           value: "{{ docker_registry }}"
+        - name: SUPERVISOR_VERSION
+          value: "{{ supervisor_version }}"
         volumeMounts:
         - name: auth
           readOnly: true
