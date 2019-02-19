@@ -15,7 +15,7 @@ spec:
       labels:
         app: oscar-manager
     spec:
-      serviceAccountName: oscar-controller
+      serviceAccountName: oscar-sa
       containers:
       - name: oscar-manager
         image: "grycap/oscar-manager:{{ oscar_version }}"
