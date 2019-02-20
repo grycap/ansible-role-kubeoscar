@@ -38,15 +38,16 @@ data:
         }
         location /minio/ {
           proxy_pass              http://minio-service.minio:9000/minio/;
-          proxy_set_header Host $host;
+          proxy_set_header        Host $host;
         }
         location /openfaas/ {
+          rewrite /openfaas/(.*) /$1  break;
           proxy_pass              http://gateway-external.openfaas:8080/;
-          proxy_set_header Host $host;
+          proxy_set_header        Host $host;
+          proxy_redirect          off;
         }
         location /ui/ {
-          proxy_pass              http://gateway-external.openfaas:8080/ui/;
-          proxy_set_header Host $host;
+          return         301 https://$host/openfaas$request_uri;
         }
       }
 ---
