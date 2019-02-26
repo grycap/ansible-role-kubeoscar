@@ -21,11 +21,7 @@ spec:
         image: "grycap/oscar-manager:{{ oscar_version }}"
         env:
         - name: OPENFAAS_ENDPOINT
-          value: "{{ openfaas_url }}:{{ openfaas_port }}"
-        - name: EVENTGATEWAY_CONFIG_ENDPOINT
-          value: "{{ event_gateway_url }}:{{ event_gateway_config_port }}"
-        - name: EVENTGATEWAY_EVENTS_ENDPOINT
-          value: "{{ event_gateway_url }}:{{ event_gateway_events_port }}"            
+          value: "{{ openfaas_url }}:{{ openfaas_port }}"          
         - name: MINIO_ENDPOINT
           value: "{{ minio_url }}:{{ minio_port }}"
         - name: MINIO_USER
