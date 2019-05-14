@@ -32,6 +32,8 @@ spec:
           value: "{{ docker_registry }}"
         - name: SUPERVISOR_VERSION
           value: "{{ supervisor_version }}"
+        - name: ONETRIGGER_VERSION
+          value: "{{ onetrigger_version }}"
         volumeMounts:
         - name: auth
           readOnly: true
