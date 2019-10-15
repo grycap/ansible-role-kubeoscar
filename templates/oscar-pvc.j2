@@ -4,9 +4,10 @@ metadata:
   name: oscar-pv-claim
   namespace: oscar
 spec:
+{% if volume_labels %}
   selector:
-    matchLabels:
-      app: oscar-manager
+    matchLabels: {{ volume_labels }}
+{% endif %}
   accessModes:
     - ReadWriteOnce
   resources:
