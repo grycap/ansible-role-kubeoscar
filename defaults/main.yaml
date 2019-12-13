@@ -12,4 +12,6 @@ vue_app_backend_host: "https://{{ansible_fqdn}}:{{oscar_ui_nodeport}}"
 supervisor_version: "latest"
 onetrigger_version: "latest"
 # Deploy in Kubernetes Master node
-master_deploy: false 
+master_deploy: false
+# Labels used to match with created PersistentVolume
+volume_labels: {}
