@@ -5,5 +5,5 @@
 - name: Create OSCAR UI
   include: ui.yml
 
-- name: Create Nginx
-  include: nginx.yml
+# - name: Create Nginx
+#   include: nginx.yml
