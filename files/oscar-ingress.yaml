@@ -1,0 +1,35 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: oscar
+  name: oscar-manager
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: /oscar/
+spec:
+  rules:
+    - http:
+        paths:
+        - backend:
+            serviceName: oscar-manager
+            servicePort: 8080
+          path: /oscar/(.*)
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+  name: oscar-ui
+  namespace: oscar
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: oscar-ui
+          servicePort: 3000
+        path: /

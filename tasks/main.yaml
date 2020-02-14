@@ -4,3 +4,8 @@
 
 - name: Create OSCAR UI
   include: ui.yml
+
+- name: Create ingress
+  block:
+  - copy: src=oscar-ingress.yaml dest=/tmp/oscar-ingress.yaml
+  - command: kubectl apply -f /tmp/oscar-ingress.yaml
