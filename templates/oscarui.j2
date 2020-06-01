@@ -40,12 +40,10 @@ metadata:
   name: oscar-ui
   namespace: oscar
 spec:
-  type: NodePort
   ports:
-    - name: endpoint
+    - name: oscar-ui
       port: 3000
       protocol: TCP
       targetPort: 3000
-      nodePort: {{ oscar_ui_nodeport }} 
   selector:
     app: oscar-ui

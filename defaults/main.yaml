@@ -7,10 +7,7 @@ minio_url: "minio-service.minio"
 minio_port: "9000"
 minio_user: "minio"
 minio_pass: "minio123"
-nginx_http_nodeport: 80
-nginx_https_nodeport: 443
 oscar_ui_version: latest
-oscar_ui_nodeport: 31114
 vue_app_backend_host: "https://{{ansible_fqdn}}:{{oscar_ui_nodeport}}"
 supervisor_version: "latest"
 onetrigger_version: "latest"
