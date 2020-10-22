@@ -1,0 +1,37 @@
+servicesNamespace: {{ oscar_services_namespace }}
+authUser: {{ oscar_user }}
+authPass: {{ oscar_pass }}
+
+serverlessBackend: {{ serverless_backend }}
+
+openfaas:
+  namespace: {{ openfaas_namespace }}
+  port: {{ openfaas_port }}
+
+service:
+  type: {{ oscar_service_type }}
+  nodePort: {{ oscar_nodeport }}
+
+createIngress: {{ create_ingress }}
+
+image:
+  tag: {{ oscar_version }}
+
+minIO:
+  endpoint: {{ minio_endpoint }}
+  TLSVerify: {{ minio_tls_verify }}
+  region:  {{ minio_region }}
+  accessKey: {{ minio_access_key }}
+  secretKey: {{ minio_secret_key }}
+
+volume:
+  supervisorVersion: {{ supervisor_version }}
+
+{% if master_deploy %}
+tolerations:
+- key: node-role.kubernetes.io/master
+  operator: Exists
+  effect: NoSchedule
+nodeSelector:
+  node-role.kubernetes.io/master: ''
+{% endif %}

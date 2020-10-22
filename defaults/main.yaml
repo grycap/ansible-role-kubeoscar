@@ -1,17 +1,34 @@
+# OSCAR version to install (can be a release tag or "latest")
 oscar_version: "latest"
-oscar_nodeport: 32112
-docker_registry: "registry.docker-registry"
-openfaas_url: "http://gateway.openfaas"
-openfaas_port: "8080"
-minio_url: "minio-service.minio"
-minio_port: "9000"
-minio_user: "minio"
-minio_pass: "minio123"
-oscar_ui_version: latest
-vue_app_backend_host: "{{ansible_fqdn}}"
-supervisor_version: "latest"
-onetrigger_version: "latest"
+# Namespace to deploy OSCAR services
+oscar_services_namespace: "oscar-svc"
+# OSCAR username for basic auth
+oscar_user: "oscar"
+# OSCAR password for basic auth
+oscar_pass: "oscar123"
+# Service type for OSCAR
+oscar_service_type: "ClusterIP"
+# NodePort used if the service type is NodePort
+oscar_nodeport: 30301
+# Expose by a Kubernetes Ingress
+create_ingress: false
+# Serverless Backend (can be "openfaas" or "")
+serverless_backend: ""
+# Namespace where the OpenFaaS gateway is deployed
+openfaas_namespace: "openfaas"
+# Service port where the OpenFaaS gateway is exposed (ClusterIP)
+openfaas_port: 8080
+# MinIO endpoint
+minio_endpoint: "https://minio-service.minio:9000"
+# Verify MinIO's TLS certificates for HTTPS connections
+minio_tls_verify: true
+# Region of the MinIO server
+minio_region: "us-east-1"
+# Access key of the MinIO server
+minio_access_key: "minio"
+# Secret key of the MinIO server
+minio_secret_key: "minio123"
+# FaaS Supervisor version to use in the OSCAR's services
+supervisor_version: "1.3.0-beta2"
 # Deploy in Kubernetes Master node
 master_deploy: false
-# Labels used to match with created PersistentVolume
-volume_labels: {}
