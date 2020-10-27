@@ -10,7 +10,12 @@
 - name: "Update helm repositories"
   command: helm repo update
 
-# TODO: manage the oscar-svc namespace if openfaas is enabled as ServerlessBackend
+- name: Create OSCAR services' namespace
+  block:
+  - template:
+      src: oscar-svc-ns.j2
+      dest: /tmp/oscar-svc-ns.yaml
+  - command: kubectl apply -f /tmp/oscar-svc-ns.yaml
 
 - name: Install (or upgrade) the chart
   command: helm upgrade oscar --install grycap/oscar --namespace oscar --create-namespace --values /tmp/oscar-values.yaml
