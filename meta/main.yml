@@ -1,6 +1,6 @@
 galaxy_info:
   role_name: kubeoscar
-  author: alpegon3@upv.es
+  author: serisgal@i3m.upv.es
   description: Install OSCAR framework using a Kubernetes Cluster
   company: GRyCAP
   license: Apache

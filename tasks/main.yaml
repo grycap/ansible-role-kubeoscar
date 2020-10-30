@@ -1,11 +1,21 @@
 ---
-- name: Create OSCAR pod, service, rbac and namespace
-  include: oscar.yaml
+- name: Create values file
+  template:
+    src: values.j2
+    dest: /tmp/oscar-values.yaml
 
-- name: Create OSCAR UI
-  include: ui.yml
+- name: Add GRyCAP helm repo
+  command: helm repo add grycap https://grycap.github.io/helm-charts/
 
-- name: Create ingress
+- name: "Update helm repositories"
+  command: helm repo update
+
+- name: Create OSCAR services' namespace
   block:
-  - copy: src=oscar-ingress.yaml dest=/tmp/oscar-ingress.yaml
-  - command: kubectl apply -f /tmp/oscar-ingress.yaml
+  - template:
+      src: oscar-svc-ns.j2
+      dest: /tmp/oscar-svc-ns.yaml
+  - command: kubectl apply -f /tmp/oscar-svc-ns.yaml
+
+- name: Install (or upgrade) the chart
+  command: helm upgrade oscar --install grycap/oscar --namespace oscar --create-namespace --values /tmp/oscar-values.yaml
