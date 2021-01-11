@@ -32,3 +32,5 @@ minio_secret_key: "minio123"
 supervisor_version: "1.3.0"
 # Deploy in Kubernetes Master node
 master_deploy: false
+# Default kubeconfig path
+kubeconfig_path: '/etc/kubernetes/admin.conf'
