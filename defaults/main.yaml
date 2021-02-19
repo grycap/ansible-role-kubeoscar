@@ -12,8 +12,8 @@ oscar_service_type: "ClusterIP"
 oscar_nodeport: 30301
 # Expose by a Kubernetes Ingress
 create_ingress: false
-# Serverless Backend (can be "openfaas" or "")
-serverless_backend: ""
+# Serverless Backend (can be "openfaas" or "''")
+serverless_backend: "''"
 # Namespace where the OpenFaaS gateway is deployed
 openfaas_namespace: "openfaas"
 # Service port where the OpenFaaS gateway is exposed (ClusterIP)
