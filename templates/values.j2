@@ -14,8 +14,10 @@ service:
 
 createIngress: {{ create_ingress }}
 
+{% if oscar_version %}
 image:
   tag: {{ oscar_version }}
+{% endif %}
 
 minIO:
   endpoint: {{ minio_endpoint }}
