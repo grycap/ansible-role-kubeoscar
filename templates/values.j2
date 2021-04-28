@@ -12,7 +12,10 @@ service:
   type: {{ oscar_service_type }}
   nodePort: {{ oscar_nodeport }}
 
-createIngress: {{ create_ingress }}
+ingress:
+  create: {{ create_ingress }}
+  host: {{ dns_host }}
+  certManagerIssuer: {{ cert_manager_issuer }}
 
 {% if oscar_version %}
 image:

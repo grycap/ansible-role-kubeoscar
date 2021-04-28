@@ -12,6 +12,10 @@ oscar_service_type: "ClusterIP"
 oscar_nodeport: 30301
 # Expose by a Kubernetes Ingress
 create_ingress: false
+# DNS hostname for the ingress
+dns_host: "''"
+# Cert-manager issuer to automatically assign TLS certificates
+cert_manager_issuer: "''"
 # Serverless Backend (can be "openfaas" or "''")
 serverless_backend: "''"
 # Namespace where the OpenFaaS gateway is deployed
