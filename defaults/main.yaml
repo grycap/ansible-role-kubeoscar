@@ -1,5 +1,5 @@
 # OSCAR version to install (can be a release tag or "latest")
-oscar_version: "''"
+oscar_version: ""
 # Namespace to deploy OSCAR services
 oscar_services_namespace: "oscar-svc"
 # OSCAR username for basic auth
