@@ -7,6 +7,10 @@ serverlessBackend: {{ serverless_backend }}
 openfaas:
   namespace: {{ openfaas_namespace }}
   port: {{ openfaas_port }}
+  scaler:
+    enable: {{ openfaas_scaler_enable }}
+    interval: {{ openfaas_scaler_interval }}
+    inactivityDuration: {{ openfaas_scaler_inactivity_duration }}
 
 service:
   type: {{ oscar_service_type }}
