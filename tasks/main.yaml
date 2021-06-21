@@ -27,3 +27,22 @@
   command: helm upgrade oscar --install grycap/oscar --namespace oscar --create-namespace --values /tmp/oscar-values.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: Download oscar-cli
+  get_url:
+    url: https://github.com/grycap/oscar-cli/releases/download/{{ oscar_cli_version }}/oscar-cli
+    dest: /usr/bin/oscar-cli
+    mode: '755'
+
+- name: Set OSCAR endpoint
+  block:
+  - set_fact:
+      oscar_endpoint: "https://{{ ansible_default_ipv4.address }}"
+    when: create_ingress == true
+  - set_fact:
+      oscar_endpoint: "http://{{ ansible_default_ipv4.address}}:{{ oscar_nodeport }}"
+    when: create_ingress == false and oscar_service_type == "NodePort"
+
+- name: Add the cluster to oscar-cli
+  command: oscar-cli cluster add oscar-cluster {{ oscar_endpoint }} {{ oscar_user }} {{ oscar_pass }} --disable-ssl
+  when: oscar_endpoint is defined
