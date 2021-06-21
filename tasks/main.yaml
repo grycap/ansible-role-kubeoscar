@@ -44,5 +44,5 @@
     when: create_ingress == false and oscar_service_type == "NodePort"
 
 - name: Add the cluster to oscar-cli
-  command: oscar-cli cluster add oscar-cluster {{ oscar_endpoint }} {{ oscar_user }} {{ oscar_pass }}
+  command: oscar-cli cluster add oscar-cluster {{ oscar_endpoint }} {{ oscar_user }} {{ oscar_pass }} --disable-ssl
   when: oscar_endpoint is defined
