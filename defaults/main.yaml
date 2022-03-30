@@ -45,5 +45,5 @@ master_deploy: false
 # Default kubeconfig path
 kubeconfig_path: '/etc/kubernetes/admin.conf'
 # Version of oscar-cli to be installed and configured
-oscar_cli_version: "v1.2.3"
+oscar_cli_version: "v1.2.4"
 
