@@ -46,4 +46,22 @@ master_deploy: false
 kubeconfig_path: '/etc/kubernetes/admin.conf'
 # Version of oscar-cli to be installed and configured
 oscar_cli_version: "v1.3.0"
+# Enable Resource Manager
+resource_manager_enable: true
+# Time interval (in seconds) to update the available resources in the cluster
+resource_manager_interval: 15
+# Enable ReScheduler
+rescheduler_enable: true
+# Time interval (in seconds) to check if pending jobs
+rescheduler_interval: 15
+# Time (in seconds) that a job (with replicas) can be queued before delegating it
+rescheduler_threshold: 30
+# Parameter to enable OpenID Connect support
+oidc_enable: false
+# OpenID Connect issuer as returned in the "iss" field of the JWT payload
+oidc_issuer: "https://aai.egi.eu/oidc/"
+# OpenID Connect Subject (user identifier)
+oidc_subject: ""
+# OpenID group list to grant access in the cluster. Groups defined in the "eduperson_entitlement" OIDC scope, as described in https://docs.egi.eu/providers/check-in/sp/#10-groups
+oidc_groups: []
 
