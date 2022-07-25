@@ -39,11 +39,11 @@ minio_access_key: "minio"
 # Secret key of the MinIO server
 minio_secret_key: "minio123"
 # FaaS Supervisor version to use in the OSCAR's services
-supervisor_version: "1.5.0"
+supervisor_version: "1.5.2"
 # Deploy in Kubernetes Master node
 master_deploy: false
 # Default kubeconfig path
 kubeconfig_path: '/etc/kubernetes/admin.conf'
 # Version of oscar-cli to be installed and configured
-oscar_cli_version: "v1.2.5"
+oscar_cli_version: "v1.3.0"
 
