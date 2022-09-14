@@ -33,6 +33,21 @@ minIO:
   accessKey: {{ minio_access_key }}
   secretKey: {{ minio_secret_key }}
 
+resourceManager:
+  enable: {{ resource_manager_enable }}
+  interval: {{ resource_manager_interval }}
+
+reScheduler:
+  enable: {{ rescheduler_enable }}
+  interval: {{ rescheduler_interval }}
+  threshold: {{ rescheduler_threshold }}
+
+oidc:
+  enable: {{ oidc_enable }}
+  issuer: {{ oidc_issuer }}
+  subject: {{ oidc_subject }}
+  groups: "{% for group in oidc_groups %}{{ group }}{{ "," if not loop.last else "" }}{% endfor %}"
+
 volume:
   supervisorVersion: {{ supervisor_version }}
 
