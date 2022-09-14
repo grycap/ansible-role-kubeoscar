@@ -59,7 +59,7 @@ rescheduler_threshold: 30
 # Parameter to enable OpenID Connect support
 oidc_enable: false
 # OpenID Connect issuer as returned in the "iss" field of the JWT payload
-oidc_issuer: "https://aai.egi.eu/oidc/"
+oidc_issuer: "https://aai.egi.eu/auth/realms/egi"
 # OpenID Connect Subject (user identifier)
 oidc_subject: ""
 # OpenID group list to grant access in the cluster. Groups defined in the "eduperson_entitlement" OIDC scope, as described in https://docs.egi.eu/providers/check-in/sp/#10-groups
