@@ -45,7 +45,7 @@ master_deploy: false
 # Default kubeconfig path
 kubeconfig_path: '/etc/kubernetes/admin.conf'
 # Version of oscar-cli to be installed and configured
-oscar_cli_version: "v1.3.0"
+oscar_cli_version: "v1.4.0"
 # Enable Resource Manager
 resource_manager_enable: true
 # Time interval (in seconds) to update the available resources in the cluster
