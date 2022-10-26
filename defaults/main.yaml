@@ -31,7 +31,7 @@ openfaas_scaler_inactivity_duration: "10m"
 # MinIO endpoint
 minio_endpoint: "https://minio-service.minio:9000"
 # Verify MinIO's TLS certificates for HTTPS connections
-minio_tls_verify: true
+minio_tls_verify: false
 # Region of the MinIO server
 minio_region: "us-east-1"
 # Access key of the MinIO server
