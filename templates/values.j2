@@ -1,55 +1,55 @@
 servicesNamespace: {{ oscar_services_namespace }}
-authUser: {{ oscar_user }}
-authPass: {{ oscar_pass }}
+authUser: "{{ oscar_user }}"
+authPass: "{{ oscar_pass }}"
 
 serverlessBackend: {{ serverless_backend }}
 
 openfaas:
-  namespace: {{ openfaas_namespace }}
-  port: {{ openfaas_port }}
+  namespace: "{{ openfaas_namespace }}"
+  port: "{{ openfaas_port }}"
   scaler:
-    enable: {{ openfaas_scaler_enable }}
-    interval: {{ openfaas_scaler_interval }}
-    inactivityDuration: {{ openfaas_scaler_inactivity_duration }}
+    enable: "{{ openfaas_scaler_enable }}"
+    interval: "{{ openfaas_scaler_interval }}"
+    inactivityDuration: "{{ openfaas_scaler_inactivity_duration }}"
 
 service:
-  type: {{ oscar_service_type }}
-  nodePort: {{ oscar_nodeport }}
+  type: "{{ oscar_service_type }}"
+  nodePort: "{{ oscar_nodeport }}"
 
 ingress:
-  create: {{ create_ingress }}
-  host: {{ dns_host }}
-  certManagerIssuer: {{ cert_manager_issuer }}
+  create: "{{ create_ingress }}"
+  host: "{{ dns_host }}"
+  certManagerIssuer: "{{ cert_manager_issuer }}"
 
 {% if oscar_version|length %}
 image:
-  tag: {{ oscar_version }}
+  tag: "{{ oscar_version }}"
 {% endif %}
 
 minIO:
-  endpoint: {{ minio_endpoint }}
-  TLSVerify: {{ minio_tls_verify }}
-  region:  {{ minio_region }}
-  accessKey: {{ minio_access_key }}
-  secretKey: {{ minio_secret_key }}
+  endpoint: "{{ minio_endpoint }}"
+  TLSVerify: "{{ minio_tls_verify }}"
+  region: "{{ minio_region }}"
+  accessKey: "{{ minio_access_key }}"
+  secretKey: "{{ minio_secret_key }}"
 
 resourceManager:
-  enable: {{ resource_manager_enable }}
-  interval: {{ resource_manager_interval }}
+  enable: "{{ resource_manager_enable }}"
+  interval: "{{ resource_manager_interval }}"
 
 reScheduler:
-  enable: {{ rescheduler_enable }}
-  interval: {{ rescheduler_interval }}
-  threshold: {{ rescheduler_threshold }}
+  enable: "{{ rescheduler_enable }}"
+  interval: "{{ rescheduler_interval }}"
+  threshold: "{{ rescheduler_threshold }}"
 
 oidc:
-  enable: {{ oidc_enable }}
-  issuer: {{ oidc_issuer }}
-  subject: {{ oidc_subject }}
+  enable: "{{ oidc_enable }}"
+  issuer: "{{ oidc_issuer }}"
+  subject: "{{ oidc_subject }}"
   groups: "{% for group in oidc_groups %}{{ group }}{{ "," if not loop.last else "" }}{% endfor %}"
 
 volume:
-  supervisorVersion: {{ supervisor_version }}
+  supervisorVersion: "{{ supervisor_version }}"
 
 {% if master_deploy %}
 tolerations:
