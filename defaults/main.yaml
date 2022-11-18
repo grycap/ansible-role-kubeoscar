@@ -56,6 +56,8 @@ rescheduler_enable: true
 rescheduler_interval: 15
 # Time (in seconds) that a job (with replicas) can be queued before delegating it
 rescheduler_threshold: 30
+# Parameter to enable the integration with Apache YuniKorn
+yunikorn_enable: false
 # Parameter to enable OpenID Connect support
 oidc_enable: false
 # OpenID Connect issuer as returned in the "iss" field of the JWT payload
