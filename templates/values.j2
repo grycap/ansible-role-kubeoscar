@@ -8,7 +8,7 @@ openfaas:
   namespace: "{{ openfaas_namespace }}"
   port: "{{ openfaas_port }}"
   scaler:
-    enable: "{{ openfaas_scaler_enable }}"
+    enable: {{ openfaas_scaler_enable }}
     interval: "{{ openfaas_scaler_interval }}"
     inactivityDuration: "{{ openfaas_scaler_inactivity_duration }}"
 
@@ -17,7 +17,7 @@ service:
   nodePort: "{{ oscar_nodeport }}"
 
 ingress:
-  create: "{{ create_ingress }}"
+  create: {{ create_ingress }}
   host: "{{ dns_host }}"
   certManagerIssuer: "{{ cert_manager_issuer }}"
 
@@ -28,25 +28,25 @@ image:
 
 minIO:
   endpoint: "{{ minio_endpoint }}"
-  TLSVerify: "{{ minio_tls_verify }}"
+  TLSVerify: {{ minio_tls_verify }}
   region: "{{ minio_region }}"
   accessKey: "{{ minio_access_key }}"
   secretKey: "{{ minio_secret_key }}"
 
 yuniKorn:
-  enable: "{{ yunikorn_enable }}"
+  enable: {{ yunikorn_enable }}
 
 resourceManager:
-  enable: "{{ resource_manager_enable }}"
+  enable: {{ resource_manager_enable }}
   interval: "{{ resource_manager_interval }}"
 
 reScheduler:
-  enable: "{{ rescheduler_enable }}"
+  enable: {{ rescheduler_enable }}
   interval: "{{ rescheduler_interval }}"
   threshold: "{{ rescheduler_threshold }}"
 
 oidc:
-  enable: "{{ oidc_enable }}"
+  enable: {{ oidc_enable }}
   issuer: "{{ oidc_issuer }}"
   subject: "{{ oidc_subject }}"
   groups: "{% for group in oidc_groups %}{{ group }}{{ "," if not loop.last else "" }}{% endfor %}"
