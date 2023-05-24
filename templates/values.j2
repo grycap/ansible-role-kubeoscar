@@ -56,9 +56,9 @@ volume:
 
 {% if master_deploy %}
 tolerations:
-- key: node-role.kubernetes.io/master
+- key: node-role.kubernetes.io/control-plane
   operator: Exists
   effect: NoSchedule
 nodeSelector:
-  node-role.kubernetes.io/master: ''
+  node-role.kubernetes.io/control-plane: ''
 {% endif %}
