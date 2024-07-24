@@ -16,7 +16,8 @@ service:
   type: "{{ oscar_service_type }}"
   nodePort: "{{ oscar_nodeport }}"
 
-additionalConfig: "{{ additional_config | toyaml }}"
+additionalConfig:
+{{ additional_config | to_yaml | indent(2, true) }}
 
 ingress:
   create: {{ create_ingress }}
