@@ -16,6 +16,9 @@ service:
   type: "{{ oscar_service_type }}"
   nodePort: "{{ oscar_nodeport }}"
 
+additionalConfig:
+{{ additional_config | to_yaml | indent(2, true) }}
+
 ingress:
   create: {{ create_ingress }}
   host: "{{ dns_host }}"
@@ -56,6 +59,9 @@ volume:
 
 {% if master_deploy %}
 tolerations:
+- key: node-role.kubernetes.io/control-plane
+  operator: Exists
+  effect: NoSchedule
 - key: node-role.kubernetes.io/master
   operator: Exists
   effect: NoSchedule

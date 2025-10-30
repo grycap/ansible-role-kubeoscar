@@ -1,5 +1,5 @@
 # OSCAR version to install (can be a release tag or "latest")
-oscar_version: ""
+oscar_version: "3.5.3"
 # Namespace to deploy OSCAR services
 oscar_services_namespace: "oscar-svc"
 # OSCAR username for basic auth
@@ -39,7 +39,7 @@ minio_access_key: "minio"
 # Secret key of the MinIO server
 minio_secret_key: "minio123"
 # FaaS Supervisor version to use in the OSCAR's services
-supervisor_version: "1.5.7"
+supervisor_version: "1.6.1"
 # Deploy in Kubernetes Master node
 master_deploy: false
 # Default kubeconfig path
@@ -66,4 +66,6 @@ oidc_issuer: "https://aai.egi.eu/auth/realms/egi"
 oidc_subject: ""
 # OpenID group list to grant access in the cluster. Groups defined in the "eduperson_entitlement" OIDC scope, as described in https://docs.egi.eu/providers/check-in/sp/#10-groups
 oidc_groups: []
-
+# Additional OSCAR configuration
+additional_config:
+  allowedImagePrefix: []
