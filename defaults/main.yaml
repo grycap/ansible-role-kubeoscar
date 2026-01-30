@@ -1,5 +1,5 @@
 # OSCAR version to install (can be a release tag or "latest")
-oscar_version: "3.6.5"
+oscar_version: "3.7.0"
 # Namespace to deploy OSCAR services
 oscar_services_namespace: "oscar-svc"
 # OSCAR username for basic auth
@@ -69,3 +69,9 @@ oidc_groups: []
 # Additional OSCAR configuration
 additional_config:
   allowedImagePrefix: []
+
+# Configure kueue resource
+kueue_enable: "false"
+kueue_default_cpu: "2"
+kueue_default_memory: "2Gi"
+kueue_default_flavor: "oscar-default-flavor"
