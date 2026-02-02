@@ -27,7 +27,7 @@
   command: kubectl apply --server-side -k "github.com/kubernetes-sigs/kueue/config/default?ref=v0.15.0"
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
-  when: kueue_enable == "true"
+  when: kueue_enable | bool
 
 - name: Install (or upgrade) the chart
   command: helm upgrade oscar --install grycap/oscar --namespace oscar --create-namespace --values /tmp/oscar-values.yaml
