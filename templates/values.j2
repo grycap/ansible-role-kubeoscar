@@ -70,7 +70,7 @@ nodeSelector:
 {% endif %}
 
 kueue:
-  enable: "{{ kueue_enable | default('false') | lower }}"
+  enable: "{{ kueue_enable }}"
   default:
     cpu: "{{ kueue_default_cpu }}"
     memory: "{{ kueue_default_memory }}"
