@@ -47,13 +47,20 @@
   block:
   - set_fact:
       oscar_endpoint: "https://{{ dns_host }}"
-    when: create_ingress == true and dns_host != "''"
+    when:
+      - create_ingress == true or create_httproute == true
+      - dns_host != "''"
   - set_fact:
       oscar_endpoint: "https://{{ ansible_default_ipv4.address }}"
-    when: create_ingress == true and dns_host == "''"
+    when:
+      - create_ingress == true or create_httproute == true
+      - dns_host == "''"
   - set_fact:
       oscar_endpoint: "http://{{ ansible_default_ipv4.address}}:{{ oscar_nodeport }}"
-    when: create_ingress == false and oscar_service_type == "NodePort"
+    when:
+      - create_ingress == false
+      - create_httproute == false
+      - oscar_service_type == "NodePort"
 
 - name: Add the cluster to oscar-cli
   command: oscar-cli cluster add oscar-cluster {{ oscar_endpoint }} {{ oscar_user }} {{ oscar_pass }} {{ "--disable-ssl" if dns_host == "''" else "" }}
