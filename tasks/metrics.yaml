@@ -1,0 +1,87 @@
+---
+- name: Create monitoring namespace
+  command: kubectl create namespace monitoring
+  ignore_errors: yes
+
+- name: Copy prometheus-values.yaml to remote
+  template:
+    src: templates/prometheus-values.yaml
+    dest: /tmp/prometheus-values.yaml
+    mode: '0644'
+
+- name: Copy loki-values.yaml to remote
+  template:
+    src: templates/loki-values.yaml
+    dest: /tmp/loki-values.yaml
+    mode: '0644'
+
+- name: Add Prometheus Helm repo
+  command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+- name: Update Helm repos
+  command: helm repo update
+
+- name: Install Prometheus with Helm
+  command:
+    cmd: helm upgrade --install prometheus prometheus-community/prometheus --namespace monitoring --create-namespace --set server.service.type=ClusterIP --values /tmp/prometheus-values.yaml
+
+- name: Copy clusterrole-patch.yaml to remote
+  copy:
+    src: templates/clusterrole-patch.yaml
+    dest: /tmp/clusterrole-patch.yaml
+    mode: '0644'
+
+- name: Apply ClusterRole prometheus-server
+  command: kubectl apply -f /tmp/clusterrole-patch.yaml
+
+- name: Create geoip-db PVC
+  template:
+    src: templates/geoip-pvc.yaml
+    dest: /tmp/geoip-pvc.yaml
+    mode: '0644'
+
+- name: Apply geoip-db PVC
+  command: kubectl apply -f /tmp/geoip-pvc.yaml
+
+- name: Create geoip-loader Pod
+  template:
+    src: templates/geoip-loader.yaml
+    dest: /tmp/geoip-loader.yaml
+    mode: '0644'
+
+- name: Apply geoip-loader Pod
+  command: kubectl apply -f /tmp/geoip-loader.yaml
+
+- name: Add Grafana Helm repo
+  command: helm repo add grafana https://grafana.github.io/helm-charts
+
+- name: Copy grafana-values.yaml to remote
+  copy:
+    src: grafana-values.yaml
+    dest: /tmp/grafana-values.yaml
+    mode: '0644'
+
+- name: Install Grafana with Helm
+  command:
+    cmd: helm upgrade --install grafana grafana/grafana --namespace monitoring --values /tmp/grafana-values.yaml
+
+- name: Install Loki with Helm
+  command:
+    cmd: helm upgrade --install loki grafana/loki --namespace monitoring --values /tmp/loki-values.yaml
+
+- name: Install Promtail with Helm
+  command:
+    cmd: helm upgrade --install promtail grafana/promtail --namespace monitoring --set "config.clients[0].url=http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
+
+- name: Install kube-prometheus-stack with Helm
+  command:
+    cmd: helm upgrade --install prometheus-operator prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+
+- name: Create ServiceMonitor for kube-state-metrics
+  template:
+    src: templates/servicemonitor.yaml
+    dest: /tmp/servicemonitor.yaml
+    mode: '0644'
+
+- name: Apply ServiceMonitor
+  command: kubectl apply -f /tmp/servicemonitor.yaml
