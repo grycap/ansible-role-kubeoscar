@@ -1,8 +1,4 @@
 ---
-- name: Create monitoring namespace
-  command: kubectl create namespace monitoring
-  ignore_errors: yes
-
 - name: Copy prometheus-values.yaml to remote
   template:
     src: templates/prometheus-values.yaml
@@ -17,13 +13,19 @@
 
 - name: Add Prometheus Helm repo
   command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Update Helm repos
   command: helm repo update
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Install Prometheus with Helm
   command:
-    cmd: helm upgrade --install prometheus prometheus-community/prometheus --namespace monitoring --create-namespace --set server.service.type=ClusterIP --values /tmp/prometheus-values.yaml
+    cmd: helm upgrade --namespace monitoring --create-namespace  --install prometheus prometheus-community/prometheus --set server.service.type=ClusterIP --values /tmp/prometheus-values.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Copy clusterrole-patch.yaml to remote
   copy:
@@ -33,6 +35,8 @@
 
 - name: Apply ClusterRole prometheus-server
   command: kubectl apply -f /tmp/clusterrole-patch.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Create geoip-db PVC
   template:
@@ -42,6 +46,8 @@
 
 - name: Apply geoip-db PVC
   command: kubectl apply -f /tmp/geoip-pvc.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Create geoip-loader Pod
   template:
@@ -51,9 +57,13 @@
 
 - name: Apply geoip-loader Pod
   command: kubectl apply -f /tmp/geoip-loader.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Add Grafana Helm repo
   command: helm repo add grafana https://grafana.github.io/helm-charts
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Copy grafana-values.yaml to remote
   copy:
@@ -64,18 +74,26 @@
 - name: Install Grafana with Helm
   command:
     cmd: helm upgrade --install grafana grafana/grafana --namespace monitoring --values /tmp/grafana-values.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Install Loki with Helm
   command:
     cmd: helm upgrade --install loki grafana/loki --namespace monitoring --values /tmp/loki-values.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Install Promtail with Helm
   command:
     cmd: helm upgrade --install promtail grafana/promtail --namespace monitoring --set "config.clients[0].url=http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Install kube-prometheus-stack with Helm
   command:
     cmd: helm upgrade --install prometheus-operator prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Create ServiceMonitor for kube-state-metrics
   template:
@@ -85,3 +103,5 @@
 
 - name: Apply ServiceMonitor
   command: kubectl apply -f /tmp/servicemonitor.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
