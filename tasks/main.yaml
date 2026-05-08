@@ -34,6 +34,10 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
+- name: Include monitoring tasks
+  import_tasks: metrics.yaml
+  when: metrics | bool
+
 - name: Download oscar-cli
   block:
   - set_fact:

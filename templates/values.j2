@@ -56,6 +56,15 @@ oidc:
 
 volume:
   supervisorVersion: "{{ supervisor_version }}"
+  storageClassName: "{{ volume_storage_class_name }}"
+  watchdogVersion: "{{ volume_watchdog_version }}"
+  supervisorKit: "{{ volume_supervisor_kit }}"
+  enable: "{{ volume_enable }}"
+  default:
+    available: "{{ volume_default_available }}"
+    max: "{{ volume_default_max }}"
+    max_disk: "{{ volume_default_max_disk }}"
+    min_disk: "{{ volume_default_min_disk }}"
 
 {% if master_deploy %}
 tolerations:
@@ -75,3 +84,29 @@ kueue:
     cpu: "{{ kueue_default_cpu }}"
     memory: "{{ kueue_default_memory }}"
     flavor: "{{ kueue_default_flavor }}"
+
+prometheus:
+  url: "{{ prometheus_url }}"
+  cpuQuery: "{{ prometheus_cpu_query }}"
+  gpuQuery: "{{ prometheus_gpu_query }}"
+
+loki:
+  url: "{{ loki_url }}"
+  query: "{{ loki_query }}"
+  exposedQuery: "{{ loki_exposed_query }}"
+  exposedNamespace: "{{ loki_exposed_namespace }}"
+  exposedAppLabel: "{{ loki_exposed_app_label }}"
+
+exposedServices:
+  routeKind: "{{ exposed_services_route_kind }}"
+
+httproute:
+  gatewayName: "{{ httproute_gateway_name }}"
+  gatewayNamespace: "{{ httproute_gateway_namespace }}"
+
+ingressServices:
+  corsAllowedOrigins: "{{ ingress_services_cors_allowed_origins }}"
+  corsAllowedMethods: "{{ ingress_services_cors_allowed_methods }}"
+  corsAllowedHeaders: "{{ ingress_services_cors_allowed_headers }}"
+
+additionalConfigPath: "{{ additional_config_path }}"
