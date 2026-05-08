@@ -73,19 +73,19 @@
 
 - name: Install Grafana with Helm
   command:
-    cmd: helm upgrade --install grafana grafana/grafana --namespace monitoring --values /tmp/grafana-values.yaml
+    cmd: helm upgrade --install grafana grafana/grafana --namespace monitoring --create-namespace --values /tmp/grafana-values.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Install Loki with Helm
   command:
-    cmd: helm upgrade --install loki grafana/loki --namespace monitoring --values /tmp/loki-values.yaml
+    cmd: helm upgrade --install loki grafana/loki --namespace monitoring --create-namespace --values /tmp/loki-values.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Install Promtail with Helm
   command:
-    cmd: helm upgrade --install promtail grafana/promtail --namespace monitoring --set "config.clients[0].url=http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
+    cmd: helm upgrade --install promtail grafana/promtail --namespace monitoring --create-namespace --set "config.clients[0].url=http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
