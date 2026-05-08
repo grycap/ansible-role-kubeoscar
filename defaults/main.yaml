@@ -78,8 +78,8 @@ kueue_default_flavor: "oscar-default-flavor"
 
 # Configure Prometheus
 prometheus_url: ""
-prometheus_cpu_query: 'sum(increase(container_cpu_usage_seconds_total{namespace=~"{{services_namespace}}.*",service=~"{{service}}"}[{{range}}])) / 3600'
-prometheus_gpu_query: 'sum(increase(container_gpu_usage_seconds_total{namespace=~"{{services_namespace}}.*",service=~"{{service}}"}[{{range}}])) / 3600'
+prometheus_cpu_query: "{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}"
+prometheus_gpu_query: "{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}"
 
 # Configure Loki
 loki_url: ""
