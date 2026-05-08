@@ -1,5 +1,5 @@
 # OSCAR version to install (can be a release tag or "latest")
-oscar_version: "latest"
+oscar_version: "4.0.0"
 # Namespace to deploy OSCAR services
 oscar_services_namespace: "oscar-svc"
 # OSCAR username for basic auth
@@ -78,13 +78,13 @@ kueue_default_flavor: "oscar-default-flavor"
 
 # Configure Prometheus
 prometheus_url: ""
-prometheus_cpu_query: "{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}"
-prometheus_gpu_query: "{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}"
+prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~"{{services_namespace}}.*",service=~"{{service}}"}[{{range}}])) / 3600){% endraw %}'
+prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~"{{services_namespace}}.*",service=~"{{service}}"}[{{range}}])) / 3600){% endraw %}'
 
 # Configure Loki
 loki_url: ""
-loki_query: '{namespace="{{namespace}}", app="{{app}}"} |~ "/(job|run)/"'
-loki_exposed_query: '{namespace="{{namespace}}", app="{{app}}"} |~ "/system/services/.+/exposed"'
+loki_query: '{% raw %}{namespace="{{namespace}}", app="{{app}}"} |~ "/(job|run)/"{% endraw %}'
+loki_exposed_query: '{% raw %}{namespace="{{namespace}}", app="{{app}}"} |~ "/system/services/.+/exposed"{% endraw %}'
 loki_exposed_namespace: "ingress-nginx"
 loki_exposed_app_label: "ingress-nginx"
 
