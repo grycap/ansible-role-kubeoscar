@@ -25,6 +25,7 @@ ingress:
   certManagerIssuer: "{{ cert_manager_issuer }}"
 
 httproute:
+  type: "traefik"
   create: {{ create_httproute }}
   host: "{{ dns_host }}"
   gatewayName: "{{ httproute_gateway_name }}"
