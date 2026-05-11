@@ -24,6 +24,10 @@ ingress:
   host: "{{ dns_host }}"
   certManagerIssuer: "{{ cert_manager_issuer }}"
 
+httproute:
+  create: {{ create_httproute }}
+  host: "{{ dns_host }}"
+
 {% if oscar_version|length %}
 image:
   tag: "{{ oscar_version }}"
