@@ -28,8 +28,9 @@ httproute:
   type: "traefik"
   create: {{ create_httproute }}
   host: "{{ dns_host }}"
-  gatewayName: "{{ httproute_gateway_name }}"
-  gatewayNamespace: "{{ httproute_gateway_namespace }}"
+  gateway:
+    name: "{{ httproute_gateway_name }}"
+    namespace: "{{ httproute_gateway_namespace }}"
 
 {% if oscar_version|length %}
 image:
