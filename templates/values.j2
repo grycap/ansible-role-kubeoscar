@@ -24,6 +24,14 @@ ingress:
   host: "{{ dns_host }}"
   certManagerIssuer: "{{ cert_manager_issuer }}"
 
+httproute:
+  type: "traefik"
+  create: {{ create_httproute }}
+  host: "{{ dns_host }}"
+  gateway:
+    name: "{{ httproute_gateway_name }}"
+    namespace: "{{ httproute_gateway_namespace }}"
+
 {% if oscar_version|length %}
 image:
   tag: "{{ oscar_version }}"
@@ -103,10 +111,6 @@ loki:
 
 exposedServices:
   routeKind: "{{ exposed_services_route_kind }}"
-
-httproute:
-  gatewayName: "{{ httproute_gateway_name }}"
-  gatewayNamespace: "{{ httproute_gateway_namespace }}"
 
 ingressServices:
   corsAllowedOrigins: "{{ ingress_services_cors_allowed_origins }}"
