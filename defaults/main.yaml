@@ -40,6 +40,12 @@ minio_region: "us-east-1"
 minio_access_key: "minio"
 # Secret key of the MinIO server
 minio_secret_key: "minio123"
+# Enable MinIO quota
+minio_quota_enabled: false
+# Number of buckets to create if MinIO quota is enabled
+minio_quota_buckets: 5
+# Storage quota per bucket if MinIO quota is enabled (e.g., "10Gi")
+minio_quota_storage: "5Gi"
 # FaaS Supervisor version to use in the OSCAR's services
 supervisor_version: "1.6.2"
 # Deploy in Kubernetes Master node
