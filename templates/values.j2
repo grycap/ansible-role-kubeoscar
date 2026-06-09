@@ -46,7 +46,7 @@ minIO:
   quota:
     enabled: "{{ minio_quota_enabled }}"
     buckets: "{{ minio_quota_buckets }}"
-    storage: "<s{{ minio_quota_storage }}"
+    storage: "{{ minio_quota_storage }}"
 
 yuniKorn:
   enable: {{ yunikorn_enable }}
