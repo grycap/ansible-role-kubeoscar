@@ -85,19 +85,29 @@ kueue_default_memory: "2Gi"
 kueue_default_flavor: "oscar-default-flavor"
 
 # Configure Prometheus
-prometheus_url: ""
-prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}'
-prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}'
+#prometheus_url: ""
+#prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}'
+#prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}'
+
+prometheus_url: "http://prometheus-server.monitoring.svc.cluster.local:80"
+prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~"{{services_namespace}}.*",service=~"{{service}}"}[{{range}}])) / 3600{% endraw %}'
+prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~"{{services_namespace}}.*",service=~"{{service}}"}[{{range}}])) / 3600{% endraw %}'
 
 # Configure Loki
-loki_url: ""
-loki_query: '{% raw %}{namespace=\"{{namespace}}\", app=\"{{app}}\"} |~ \"/(job|run)/\"{% endraw %}'
-loki_exposed_query: '{% raw %}{namespace=\"{{namespace}}\", app=\"{{app}}\"} |~ \"/system/services/.+/exposed\"{% endraw %}'
-loki_exposed_namespace: "ingress-nginx"
-loki_exposed_app_label: "ingress-nginx"
+#loki_url: ""
+#loki_query: '{% raw %}{namespace=\"{{namespace}}\", app=\"{{app}}\"} |~ \"/(job|run)/\"{% endraw %}'
+#loki_exposed_query: '{% raw %}{namespace=\"{{namespace}}\", app=\"{{app}}\"} |~ \"/system/services/.+/exposed\"{% endraw %}'
+#loki_exposed_namespace: "ingress-nginx"
+#loki_exposed_app_label: "ingress-nginx"
+
+loki_url: "http://loki.monitoring:3100"
+loki_query: '{namespace="oscar", app="oscar", container="oscar"}'
+loki_exposed_query: '{namespace="oscar", app="oscar", container="oscar"}'
+loki_exposed_namespace: "traefik"
+loki_exposed_app_label: "traefik"
 
 # Configure Exposed Services
-exposed_services_route_kind: "ingress"
+exposed_services_route_kind: "httproute" # Can be "httproute" or "ingress"
 
 # Configure HTTPRoute
 httproute_gateway_name: "traefik-gateway"
