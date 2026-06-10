@@ -2,14 +2,14 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: prometheus-kube-state-metrics
-  namespace: monitoring
+  namespace: {{ monitoring_namespace | default('monitoring') }}
 spec:
   selector:
     matchLabels:
       app: prometheus-kube-state-metrics
   namespaceSelector:
     matchNames:
-      - monitoring
+      - {{ monitoring_namespace | default('monitoring') }}
   endpoints:
     - port: "8080"
       interval: 30s

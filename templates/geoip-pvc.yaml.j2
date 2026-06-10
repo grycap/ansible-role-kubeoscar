@@ -2,11 +2,11 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: geoip-db
-  namespace: monitoring
+  namespace: {{ monitoring_namespace | default('monitoring') }}
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-  storageClassName: managed-nfs-storage
+  storageClassName: {{ volume_storage_class_name }}

@@ -27,7 +27,7 @@ singleBinary:
     whenScaled: Retain
     whenDeleted: Retain
     enableStatefulSetAutoDeletePVC: true
-    storageClass: managed-nfs-storage
+    storageClass: {{ volume_storage_class_name }}
 read:
   replicas: 0
 write:
