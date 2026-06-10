@@ -1,13 +1,13 @@
 ---
-- name: Copy prometheus-values.yaml to remote
-  copy:
-    src: prometheus-values.yaml
+- name: Template prometheus-values.yaml to remote
+  template:
+    src: prometheus-values.yaml.j2
     dest: /tmp/prometheus-values.yaml
     mode: '0644'
 
-- name: Copy loki-values.yaml to remote
-  copy:
-    src: loki-values.yaml
+- name: Template loki-values.yaml to remote
+  template:
+    src: loki-values.yaml.j2
     dest: /tmp/loki-values.yaml
     mode: '0644'
 
@@ -27,9 +27,9 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Copy clusterrole-patch.yaml to remote
-  copy:
-    src: clusterrole-patch.yaml
+- name: Template clusterrole-patch.yaml to remote
+  template:
+    src: clusterrole-patch.yaml.j2
     dest: /tmp/clusterrole-patch.yaml
     mode: '0644'
 
@@ -38,9 +38,9 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Create geoip-db PVC
-  copy:
-    src: geoip-pvc.yaml
+- name: Template geoip-pvc.yaml to remote
+  template:
+    src: geoip-pvc.yaml.j2
     dest: /tmp/geoip-pvc.yaml
     mode: '0644'
 
@@ -49,9 +49,9 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Create geoip-loader Pod
-  copy:
-    src: geoip-loader.yaml
+- name: Template geoip-loader.yaml to remote
+  template:
+    src: geoip-loader.yaml.j2
     dest: /tmp/geoip-loader.yaml
     mode: '0644'
 
@@ -63,9 +63,9 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Copy grafana-values.yaml to remote
-  copy:
-    src: grafana-values.yaml
+- name: Template grafana-values.yaml to remote
+  template:
+    src: grafana-values.yaml.j2
     dest: /tmp/grafana-values.yaml
     mode: '0644'
 
@@ -87,9 +87,9 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Copy alloy-values.kind.yaml to remote
-  copy:
-    src: alloy-values.yaml
+- name: Template alloy-values.yaml to remote
+  template:
+    src: alloy-values.yaml.j2
     dest: /tmp/alloy-values.kind.yaml
     mode: '0644'
 
@@ -105,9 +105,9 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Create ServiceMonitor for kube-state-metrics
-  copy:
-    src: servicemonitor.yaml
+- name: Template servicemonitor.yaml to remote
+  template:
+    src: servicemonitor.yaml.j2
     dest: /tmp/servicemonitor.yaml
     mode: '0644'
 
