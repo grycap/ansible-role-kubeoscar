@@ -101,8 +101,8 @@ prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{n
 #loki_exposed_app_label: "ingress-nginx"
 
 loki_url: "http://loki.monitoring:3100"
-loki_query: '{namespace="oscar", app="oscar", container="oscar"}'
-loki_exposed_query: '{namespace="oscar", app="oscar", container="oscar"}'
+loki_query: '{namespace=\"oscar\", app=\"oscar\", container=\"oscar\"}'
+loki_exposed_query: '{namespace=\"oscar\", app=\"oscar\", container=\"oscar\"}'
 loki_exposed_namespace: "traefik"
 loki_exposed_app_label: "traefik"
 
