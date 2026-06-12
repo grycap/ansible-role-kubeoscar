@@ -83,6 +83,9 @@ kueue_enable: false
 kueue_default_cpu: "2"
 kueue_default_memory: "2Gi"
 kueue_default_flavor: "oscar-default-flavor"
+kueue_default_ephemeral_storage: "5Gi"
+kueue_default_gpu: "0"
+
 
 # Configure kserve resource
 kserve_enable: "false"
