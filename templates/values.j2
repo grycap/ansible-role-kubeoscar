@@ -96,6 +96,8 @@ kueue:
     cpu: "{{ kueue_default_cpu }}"
     memory: "{{ kueue_default_memory }}"
     flavor: "{{ kueue_default_flavor }}"
+    ephemeralStorage: "{{ kueue_default_ephemeral_storage }}"
+    gpu: "{{ kueue_default_gpu }}"
 
 # Configure kserve resource
 kserve:
