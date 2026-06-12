@@ -97,6 +97,10 @@ kueue:
     memory: "{{ kueue_default_memory }}"
     flavor: "{{ kueue_default_flavor }}"
 
+# Configure kserve resource
+kserve:
+  enable: "{{ kserve_enable}}"
+
 prometheus:
   url: "{{ prometheus_url }}"
   cpuQuery: "{{ prometheus_cpu_query }}"
