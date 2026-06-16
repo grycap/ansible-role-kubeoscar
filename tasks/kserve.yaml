@@ -23,4 +23,3 @@
   command: helm upgrade --install kserve-runtime-configs oci://ghcr.io/kserve/charts/kserve-runtime-configs --version {{ kserve_version }} --namespace kserve --set kserve.llmisvcConfigs.enabled=true --set kserve.servingruntime.enabled=true --wait 
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
----
