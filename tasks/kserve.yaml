@@ -1,0 +1,26 @@
+---
+- name: Install or Upgrade KServe CRD
+  command: helm upgrade --install kserve-crd oci://ghcr.io/kserve/charts/kserve-crd --version {{ kserve_version }} --namespace kserve --create-namespace --wait
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: Install or Upgrade KServe Resources
+  command: helm upgrade --install kserve-resources oci://ghcr.io/kserve/charts/kserve-resources --version {{ kserve_version }} --namespace kserve --set kserve.controller.deploymentMode=Standard  --set kserve.controller.gateway.disableIngressCreation=true --set kserve.controller.gateway.disableIstioVirtualHost=true --set 'kserve.controller.gateway.domainTemplate=\{\{ .Name \}\}.\{\{ .IngressDomain \}\}' --set kserve.controller.gateway.ingressGateway.enableGatewayApi=true --set kserve.controller.gateway.ingressGateway.kserveGateway="traefik/traefik-gateway" --set kserve.controller.gateway.ingressGateway.createGateway=false --wait
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: Install or Upgrade KServe LLM Service CRD
+  command: helm upgrade --install kserve-llmisvc-crd oci://ghcr.io/kserve/charts/kserve-llmisvc-crd  --version {{ kserve_version }} --namespace kserve --create-namespace --wait
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: Install or Upgrade KServe LLM Service Resources
+  command: helm upgrade --install kserve-llmisvc-resources oci://ghcr.io/kserve/charts/kserve-llmisvc-resources --version {{ kserve_version }} --create-namespace --namespace kserve --set kserve.createSharedResources=false --wait
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: Install or Upgrade KServe Runtime Configs
+  command: helm upgrade --install kserve-runtime-configs oci://ghcr.io/kserve/charts/kserve-runtime-configs --version {{ kserve_version }} --namespace kserve --set kserve.llmisvcConfigs.enabled=true --set kserve.servingruntime.enabled=true --wait 
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+---
