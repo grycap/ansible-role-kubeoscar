@@ -15,7 +15,7 @@ alloy:
         rule {
           source_labels = ["__meta_kubernetes_namespace"]
           regex         = "^oscar$"
-          action        = "keep" // Descarta todo lo que no sea del namespace oscar
+          action        = "keep" 
         }
   
         rule {
@@ -40,7 +40,7 @@ alloy:
         rule {
           source_labels = ["__meta_kubernetes_namespace"]
           regex         = "^traefik$"
-          action        = "keep" // Descarta todo lo que no sea del namespace traefik
+          action        = "keep" 
         }
   
         rule {
@@ -74,7 +74,6 @@ alloy:
  
       loki.process "traefik" {
   
-       // 1. Extraemos los campos del JSON
        stage.json {
          expressions = {
              ip_cliente       = "ClientHost",
@@ -88,7 +87,6 @@ alloy:
           }
         }
   
-         // 2. Convertimos las variables en etiquetas de Loki (Sintaxis Corregida)
          stage.labels {
            values={
            ip_cliente = "ip_cliente",
@@ -195,13 +193,11 @@ alloy:
           stage.match {
               selector = `{path=~"^/system/services/.+/exposed/api/kernels\\?.*"}`
   
-              // 1. Como cumplió la condición, ahora sí extraemos el nombre del servicio
               stage.regex {
                 source      = "path"
                 expression  = "^/system/services/(?P<service_name>[^/]+)/exposed/api/kernels"
               }
   
-             // 2. Sobreescribimos la etiqueta namespace con el valor extraído
              stage.labels {
                 values = {
                     "namespace" = "service_name",
