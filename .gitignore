@@ -1,1 +1,3 @@
 .project
+group_vars/
+inventory/

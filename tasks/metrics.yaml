@@ -21,12 +21,6 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Install Prometheus with Helm
-  command:
-    cmd: helm upgrade --install prometheus prometheus-community/prometheus --namespace monitoring --create-namespace --set server.service.type=ClusterIP --values /tmp/prometheus-values.yaml
-  environment:
-    KUBECONFIG: "{{ kubeconfig_path }}"
-
 - name: Template clusterrole-patch.yaml to remote
   template:
     src: clusterrole-patch.yaml.j2
@@ -75,15 +69,27 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Install Loki with Helm
-  command:
-    cmd: helm upgrade --install loki grafana/loki --namespace monitoring --values /tmp/loki-values.yaml
+- name: Copy OSCAR metrics dashboard JSON to remote
+  copy:
+    src: oscar-metrics-dashboard.json
+    dest: /tmp/oscar-metrics-dashboard.json
+    mode: '0644'
+
+- name: Create OSCAR metrics dashboard ConfigMap
+  shell:
+    cmd: >
+      kubectl create configmap oscar-metrics-dashboard
+      --from-file=/tmp/oscar-metrics-dashboard.json
+      --namespace monitoring
+      -o yaml --dry-run=client
+      | kubectl label -f- --local grafana_dashboard="1" -o yaml --dry-run=client
+      | kubectl apply -f-
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Install Promtail with Helm
+- name: Install Loki with Helm
   command:
-    cmd: helm upgrade --install promtail grafana/promtail --namespace monitoring --set "config.clients[0].url=http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
+    cmd: helm upgrade --install loki grafana/loki --namespace monitoring --values /tmp/loki-values.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
