@@ -32,6 +32,10 @@
   import_tasks: metrics.yaml
   when: metrics | bool
 
+- name: Install KServe
+  import_tasks: kserve.yaml
+  when: kserve_enable | bool
+
 - name: Download oscar-cli
   block:
   - set_fact:
@@ -65,8 +69,7 @@
   when: oscar_endpoint is defined
 
 - name: Apply Kueue configuration
-  #command: kubectl apply --server-side -k "github.com/kubernetes-sigs/kueue/config/default?ref=v0.15.0"
-  command: helm upgrade --install kueue oci://registry.k8s.io/kueue/charts/kueue  --version=0.17.2  --namespace  kueue-system  --create-namespace  --wait --timeout 300s
+  command: helm upgrade --install kueue oci://registry.k8s.io/kueue/charts/kueue  --version= {{ kueue_version }}  --namespace  kueue-system  --create-namespace  --wait --timeout 300s
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
   when: kueue_enable | bool
