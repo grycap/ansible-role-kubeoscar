@@ -23,13 +23,6 @@
     environment:
       KUBECONFIG: "{{ kubeconfig_path }}"
 
-- name: Apply Kueue configuration
-  #command: kubectl apply --server-side -k "github.com/kubernetes-sigs/kueue/config/default?ref=v0.15.0"
-  command: helm upgrade --install kueue oci://registry.k8s.io/kueue/charts/kueue  --version={{ kueue_version }}  --namespace  kueue-system  --create-namespace  --wait --timeout 300s
-  environment:
-    KUBECONFIG: "{{ kubeconfig_path }}"
-  when: kueue_enable | bool
-
 - name: Install (or upgrade) the chart
   command: helm upgrade oscar --install grycap/oscar --namespace oscar --create-namespace --values /tmp/oscar-values.yaml
   environment:
@@ -74,3 +67,9 @@
 - name: Add the cluster to oscar-cli
   command: oscar-cli cluster add oscar-cluster {{ oscar_endpoint }} {{ oscar_user }} {{ oscar_pass }} {{ "--disable-ssl" if dns_host == "''" else "" }}
   when: oscar_endpoint is defined
+
+- name: Apply Kueue configuration
+  command: helm upgrade --install kueue oci://registry.k8s.io/kueue/charts/kueue  --version= {{ kueue_version }}  --namespace  kueue-system  --create-namespace  --wait --timeout 300s
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+  when: kueue_enable | bool

@@ -91,25 +91,13 @@ kueue_version: "0.17.4"
 kserve_enable: "false"
 kserve_version: "v0.19.0"
 
-# Configure Prometheus
-#prometheus_url: ""
-#prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}'
-#prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600){% endraw %}'
-
 prometheus_url: "http://prometheus-server.monitoring.svc.cluster.local:80"
 prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600{% endraw %}'
 prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600{% endraw %}'
 
-# Configure Loki
-#loki_url: ""
-#loki_query: '{% raw %}{namespace=\"{{namespace}}\", app=\"{{app}}\"} |~ \"/(job|run)/\"{% endraw %}'
-#loki_exposed_query: '{% raw %}{namespace=\"{{namespace}}\", app=\"{{app}}\"} |~ \"/system/services/.+/exposed\"{% endraw %}'
-#loki_exposed_namespace: "ingress-nginx"
-#loki_exposed_app_label: "ingress-nginx"
-
 loki_url: "http://loki.monitoring:3100"
-loki_query: '{namespace=\"oscar\", app=\"oscar\", container=\"oscar\"}'
-loki_exposed_query: '{namespace=\"oscar\", app=\"oscar\", container=\"oscar\"}'
+loki_query: '{namespace=\"oscar\"}'
+loki_exposed_query: '{app=\"traefik\"}'
 loki_exposed_namespace: "traefik"
 loki_exposed_app_label: "traefik"
 
