@@ -1,6 +1,6 @@
 ---
 - name: Create monitoring namespace
-  command: kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
+  command: kubectl create namespace monitoring
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
