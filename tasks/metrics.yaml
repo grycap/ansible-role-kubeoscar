@@ -1,4 +1,9 @@
 ---
+- name: Create monitoring namespace
+  command: kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+
 - name: Template prometheus-values.yaml to remote
   template:
     src: prometheus-values.yaml.j2
