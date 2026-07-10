@@ -1,4 +1,0 @@
-- hosts: all
-  tasks:
-    - name: Include monitoring tasks
-      import_tasks: tasks/metrics.yaml
