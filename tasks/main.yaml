@@ -69,7 +69,7 @@
   when: oscar_endpoint is defined
 
 - name: Apply Kueue configuration
-  command: helm upgrade --install kueue oci://registry.k8s.io/kueue/charts/kueue  --version= {{ kueue_version }}  --namespace  kueue-system  --create-namespace  --wait --timeout 300s
+  command: helm upgrade --install kueue oci://registry.k8s.io/kueue/charts/kueue  --version={{ kueue_version }}  --namespace  kueue-system  --create-namespace  --wait --timeout 300s
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
   when: kueue_enable | bool
