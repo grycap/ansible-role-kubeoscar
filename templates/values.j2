@@ -38,6 +38,7 @@ image:
 {% endif %}
 
 minIO:
+  object_storage_type: "{{ object_storage_type }}"
   endpoint: "{{ minio_endpoint }}"
   TLSVerify: {{ minio_tls_verify }}
   region: "{{ minio_region }}"
