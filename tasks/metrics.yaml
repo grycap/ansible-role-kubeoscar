@@ -116,7 +116,7 @@
 
 - name: Install kube-prometheus-stack with Helm
   command:
-    cmd: helm upgrade --install prometheus-operator prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+    cmd: helm upgrade --install prometheus-operator prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace --values /tmp/prometheus-values.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
