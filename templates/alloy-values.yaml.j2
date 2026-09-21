@@ -86,7 +86,13 @@ alloy:
              timestamp_log    = "time",
           }
         }
-  
+
+        stage.geoip {
+            source  = "ip_cliente"
+            db      = "/var/lib/alloy/geoip/GeoLite2-Country.mmdb"
+            db_type = "country"
+      }
+
          stage.labels {
            values={
            ip_cliente = "ip_cliente",
@@ -97,6 +103,9 @@ alloy:
            host = "host",
            service_name = "service_name",
            timestamp_log = "timestamp_log",
+           geoip_country_name = "",
+           geoip_country_code = "",
+
          }
         }
   
@@ -205,11 +214,7 @@ alloy:
             }
           }
   
-  
-  
-  
-  
-        }
+      }
   
   
         forward_to = [loki.write.default.receiver]
