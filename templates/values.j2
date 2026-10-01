@@ -103,7 +103,7 @@ kueue:
 # Configure kserve resource
 kserve:
   enable: "{{ kserve_enable }}"
-
+  exposed_service_use_subdomain_route: "{{ exposed_service_use_subdomain_route }}"
 prometheus:
   url: "{{ prometheus_url }}"
   cpuQuery: "{{ prometheus_cpu_query }}"
