@@ -47,7 +47,7 @@ minio_quota_buckets: 5
 # Storage quota per bucket if MinIO quota is enabled (e.g., "10Gi")
 minio_quota_storage: "5Gi"
 # FaaS Supervisor version to use in the OSCAR's services
-supervisor_version: "1.6.2"
+supervisor_version: "1.0.0"
 # Deploy in Kubernetes Master node
 master_deploy: false
 # Default kubeconfig path
@@ -91,19 +91,20 @@ kueue_version: "0.17.4"
 kserve_enable: "false"
 kserve_version: "v0.19.0"
 
-prometheus_url: "http://prometheus-server.monitoring.svc.cluster.local:80"
-prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600{% endraw %}'
-prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",service=~\"{{service}}\"}[{{range}}])) / 3600{% endraw %}'
+prometheus_url: "http://prometheus-operator-kube-p-prometheus.monitoring.svc.cluster.local:90900"
+prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",pod=~\"{{service}}.*\"}[{{range}}])) / 3600{% endraw %}'
+prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",pod=~\"{{service}}.*\"}[{{range}}])) / 3600{% endraw %}'
 prometheus_storage_size: "10Gi"
 
 loki_url: "http://loki.monitoring:3100"
 loki_query: '{namespace=\"oscar\"}'
-loki_exposed_query: '{app=\"traefik\"}'
+loki_exposed_query: '{app=\"traefik\",namespace=\"{{namespace}}\"}'
 loki_exposed_namespace: "traefik"
 loki_exposed_app_label: "traefik"
 
 # Configure Exposed Services
 exposed_services_route_kind: "httproute" # Can be "httproute" or "ingress"
+exposed_service_use_subdomain_route: "true"
 
 # Configure HTTPRoute
 httproute_gateway_name: "traefik-gateway"
