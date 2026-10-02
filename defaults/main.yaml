@@ -100,7 +100,7 @@ prometheus_storage_size: "10Gi"
 
 loki_url: "http://loki.monitoring:3100"
 loki_query: '{namespace=\"oscar\"}'
-loki_exposed_query: '{app=\"traefik\",namespace=\"{{namespace}}\"}'
+loki_exposed_query: '{% raw %}{app=\"traefik\",namespace=\"{{namespace}}\"}{% endraw %}'
 loki_exposed_namespace: "traefik"
 loki_exposed_app_label: "traefik"
 
