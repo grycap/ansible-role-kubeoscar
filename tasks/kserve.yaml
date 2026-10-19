@@ -5,7 +5,7 @@
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Install or Upgrade KServe Resources
-  command: helm upgrade --install kserve-resources oci://ghcr.io/kserve/charts/kserve-resources --version {{ kserve_version }} --namespace kserve --set kserve.controller.deploymentMode=Standard  --set kserve.controller.gateway.disableIngressCreation=true --set kserve.controller.gateway.disableIstioVirtualHost=true --set 'kserve.controller.gateway.domainTemplate=\{\{ .Name \}\}.\{\{ .IngressDomain \}\}' --set kserve.controller.gateway.ingressGateway.enableGatewayApi=true --set kserve.controller.gateway.ingressGateway.kserveGateway="traefik/traefik-gateway" --set kserve.controller.gateway.ingressGateway.createGateway=false --wait
+  command: helm upgrade --install kserve-resources oci://ghcr.io/kserve/charts/kserve-resources --version {{ kserve_version }} --namespace kserve --set kserve.controller.deploymentMode=Standard  --set kserve.controller.gateway.disableIngressCreation=true --set kserve.controller.gateway.disableIstioVirtualHost=true --set 'kserve.controller.gateway.domainTemplate=\{\{ .Name \}\}.\{\{ .IngressDomain \}\}' --set kserve.controller.gateway.ingressGateway.enableGatewayApi=true --set kserve.controller.gateway.ingressGateway.kserveGateway="traefik/traefik-gateway" --set kserve.controller.gateway.ingressGateway.createGateway=false --set kserve.router.imagePullPolicy="Always" --wait
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
