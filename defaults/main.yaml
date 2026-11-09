@@ -98,8 +98,8 @@ prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{n
 prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",pod=~\"{{service}}.*\"}[{{range}}])) / 3600{% endraw %}'
 prometheus_storage_size: "10Gi"
 
-loki_url: "http://loki.monitoring:3100"
-loki_query: '{namespace=\"oscar\"}'
+loki_url: "http://loki.monitoring.svc.cluster.local:3100"
+loki_query: '{% raw %}{namespace=\"{{namespace}}\", app=\"{{app}}\"} |~ \"/(job|run)/\"{% endraw %}'
 loki_exposed_query: '{% raw %}{app=\"traefik\",namespace=\"{{namespace}}\"}{% endraw %}'
 loki_exposed_namespace: "traefik"
 loki_exposed_app_label: "traefik"
