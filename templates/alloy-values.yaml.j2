@@ -4,45 +4,45 @@ alloy:
       logging {
         level = "info"
       }
-  
+
       discovery.kubernetes "pods" {
         role = "pod"
       }
-  
+
       discovery.relabel "pod_logs" {
         targets = discovery.kubernetes.pods.targets
-  
+
         rule {
           source_labels = ["__meta_kubernetes_namespace"]
           regex         = "^oscar$"
           action        = "keep" 
         }
-  
+
         rule {
           source_labels = ["__meta_kubernetes_namespace"]
           target_label  = "namespace"
         }
-  
+
         rule {
           source_labels = ["__meta_kubernetes_pod_label_app"]
           target_label  = "app"
         }
-  
+
         rule {
           source_labels = ["__meta_kubernetes_pod_name"]
           target_label  = "pod"
         }
       }
-  
+
       discovery.relabel "ingress_logs" {
         targets = discovery.kubernetes.pods.targets
-  
+
         rule {
           source_labels = ["__meta_kubernetes_namespace"]
           regex         = "^traefik$"
           action        = "keep" 
         }
-  
+
         rule {
           source_labels = ["__meta_kubernetes_namespace"]
           target_label  = "namespace"
@@ -117,15 +117,15 @@ alloy:
           }
   
           stage.drop {
-            expression = "/system/services/.*/exposed/lab/"
+            expression = ".*/lab/"
           }
   
           stage.drop {
-            expression = "/system/services/.*/exposed/static/"
+            expression = ".*/static/"
           }
   
           stage.drop {
-            expression = "/system/services/.*/exposed/api/contents"
+            expression = ".*/api/contents"
           }
   
           stage.drop {
@@ -134,65 +134,65 @@ alloy:
   
   
           stage.drop {
-            expression = "/system/services/.*/exposed/api/config/jupyterlabapputilsextensionannouncements"
+            expression = ".*/api/config/jupyterlabapputilsextensionannouncements"
           }
   
           stage.drop {
-            expression = "/system/services/.*/exposed/api/kernelspecs"
-          }
-  
-  
-          stage.drop {
-            expression = "/system/services/.*/exposed/api/events/subscribe"
+            expression = ".*/api/kernelspecs"
           }
   
   
           stage.drop {
-            expression = "/system/services/.*/exposed/api/me"
-          }
-  
-          stage.drop {
-            expression = "/system/services/.*/exposed/nbdime/api/isgit"
-          }
-  
-          stage.drop {
-            expression = "/system/services/.*/exposed/nbdime/api/"
-          }
-  
-          stage.drop {
-            expression = "/system/services/.*/exposed/git"
-          }
-  
-          stage.drop {
-            expression = "/system/services/.*/exposed/api/nbconvert"
+            expression = ".*/api/events/subscribe"
           }
   
   
           stage.drop {
-            expression = "/system/services/.*/exposed/lsp/status"
+            expression = ".*/api/me"
           }
   
           stage.drop {
-            expression = "/system/services/.*/exposed/kernelspecs/"
+            expression = ".*/nbdime/api/isgit"
+          }
+  
+          stage.drop {
+            expression = ".*/nbdime/api/"
+          }
+  
+          stage.drop {
+            expression = ".*/git"
+          }
+  
+          stage.drop {
+            expression = ".*/api/nbconvert"
+          }
+  
+  
+          stage.drop {
+            expression = ".*/lsp/status"
+          }
+  
+          stage.drop {
+            expression = ".*/kernelspecs/"
           }
   
           ///-----------------------------------------------
           stage.drop {
-            expression = "/system/services/.*/exposed/api/terminals"
+            expression = ".*/api/terminals"
   
           }
   
   
           stage.drop {
-            expression = "/system/services/.*/exposed/api/sessions?"
+            expression = ".*/api/sessions?"
           }
   
           //stage.drop {
-          //  expression = "/system/services/.*/exposed/api/kernels/"
+          //  expression = ".*/api/kernels/"
           //}
 
           stage.drop {
-            expression = "/system/services/.*/exposed/terminals/websocket/"
+            expression = ".*/terminals/websocket/"
           }
   
   

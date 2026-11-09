@@ -1,4 +1,16 @@
 ---
+- name: Generate random password for oscar_pass
+  set_fact:
+    oscar_pass: "{{ lookup('password', '/var/tmp/oscar_pass length=12 chars=ascii_letters,digits') }}"
+  when: oscar_pass is not defined or oscar_pass == 'oscar123'
+  no_log: true
+
+- name: Generate random password for minio_secret_key
+  set_fact:
+    minio_secret_key: "{{ lookup('password', '/var/tmp/minio_secret_key length=12 chars=ascii_letters,digits') }}"
+  when: minio_secret_key is not defined or minio_secret_key == 'minio123'
+  no_log: true
+
 - name: Create values file
   template:
     src: values.j2
