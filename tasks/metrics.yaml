@@ -1,23 +1,25 @@
 ---
-- name: Create monitoring namespace
-  command: kubectl create namespace monitoring
-  register: result
-  failed_when:
-    - result.rc != 0
-    - '"AlreadyExists" not in result.stderr'
+- name: Template monitoring-namespace.yaml to remote
+  template:
+    src: namespace-monitoring.yaml.j2
+    dest: /var/tmp/namespace-monitoring.yaml
+    mode: '0644'
+
+- name: Apply monitoring namespace
+  command: kubectl apply -f /var/tmp/namespace-monitoring.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Template prometheus-values.yaml to remote
   template:
     src: prometheus-values.yaml.j2
-    dest: /tmp/prometheus-values.yaml
+    dest: /var/tmp/prometheus-values.yaml
     mode: '0644'
 
 - name: Template loki-values.yaml to remote
   template:
     src: loki-values.yaml.j2
-    dest: /tmp/loki-values.yaml
+    dest: /var/tmp/loki-values.yaml
     mode: '0644'
 
 - name: Add Prometheus Helm repo
@@ -33,33 +35,35 @@
 - name: Template clusterrole-patch.yaml to remote
   template:
     src: clusterrole-patch.yaml.j2
-    dest: /tmp/clusterrole-patch.yaml
+    dest: /var/tmp/clusterrole-patch.yaml
     mode: '0644'
 
 - name: Apply ClusterRole prometheus-server
-  command: kubectl apply -f /tmp/clusterrole-patch.yaml
+  command: kubectl apply -f /var/tmp/clusterrole-patch.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Template geoip-pvc.yaml to remote
   template:
     src: geoip-pvc.yaml.j2
-    dest: /tmp/geoip-pvc.yaml
+    dest: /var/tmp/geoip-pvc.yaml
     mode: '0644'
 
 - name: Apply geoip-db PVC
-  command: kubectl apply -f /tmp/geoip-pvc.yaml
+  command: kubectl apply -f /var/tmp/geoip-pvc.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Template geoip-loader.yaml to remote
   template:
     src: geoip-loader.yaml.j2
-    dest: /tmp/geoip-loader.yaml
+    dest: /var/tmp/geoip-loader.yaml
     mode: '0644'
 
 - name: Apply geoip-loader Pod
-  command: kubectl apply -f /tmp/geoip-loader.yaml
+  command: kubectl apply -f /var/tmp/geoip-loader.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Add Grafana Helm repo
   command: helm repo add grafana https://grafana.github.io/helm-charts
@@ -69,26 +73,26 @@
 - name: Template grafana-values.yaml to remote
   template:
     src: grafana-values.yaml.j2
-    dest: /tmp/grafana-values.yaml
+    dest: /var/tmp/grafana-values.yaml
     mode: '0644'
 
 - name: Install Grafana with Helm
   command:
-    cmd: helm upgrade --install grafana grafana/grafana --namespace monitoring --values /tmp/grafana-values.yaml
+    cmd: helm upgrade --install grafana grafana/grafana --namespace monitoring --values /var/tmp/grafana-values.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Copy OSCAR metrics dashboard JSON to remote
   copy:
     src: oscar-metrics-dashboard.json
-    dest: /tmp/oscar-metrics-dashboard.json
+    dest: /var/tmp/oscar-metrics-dashboard.json
     mode: '0644'
 
 - name: Create OSCAR metrics dashboard ConfigMap
   shell:
     cmd: >
       kubectl create configmap oscar-metrics-dashboard
-      --from-file=/tmp/oscar-metrics-dashboard.json
+      --from-file=/var/tmp/oscar-metrics-dashboard.json
       --namespace monitoring
       -o yaml --dry-run=client
       | kubectl label -f- --local grafana_dashboard="1" -o yaml --dry-run=client
@@ -98,35 +102,35 @@
 
 - name: Install Loki with Helm
   command:
-    cmd: helm upgrade --install loki grafana/loki --namespace monitoring --values /tmp/loki-values.yaml
+    cmd: helm upgrade --install loki grafana/loki --namespace monitoring --values /var/tmp/loki-values.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Template alloy-values.yaml to remote
   template:
     src: alloy-values.yaml.j2
-    dest: /tmp/alloy-values.kind.yaml
+    dest: /var/tmp/alloy-values.kind.yaml
     mode: '0644'
 
 - name: Install Alloy with Helm
   command:
-    cmd: helm upgrade --install alloy grafana/alloy --namespace monitoring --values /tmp/alloy-values.kind.yaml
+    cmd: helm upgrade --install alloy grafana/alloy --namespace monitoring --values /var/tmp/alloy-values.kind.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Install kube-prometheus-stack with Helm
   command:
-    cmd: helm upgrade --install prometheus-operator prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace --values /tmp/prometheus-values.yaml
+    cmd: helm upgrade --install prometheus-operator prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace --values /var/tmp/prometheus-values.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
 
 - name: Template servicemonitor.yaml to remote
   template:
     src: servicemonitor.yaml.j2
-    dest: /tmp/servicemonitor.yaml
+    dest: /var/tmp/servicemonitor.yaml
     mode: '0644'
 
 - name: Apply ServiceMonitor
-  command: kubectl apply -f /tmp/servicemonitor.yaml
+  command: kubectl apply -f /var/tmp/servicemonitor.yaml
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"

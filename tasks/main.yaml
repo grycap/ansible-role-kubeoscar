@@ -11,34 +11,8 @@
   when: minio_secret_key is not defined or minio_secret_key == 'minio123'
   no_log: true
 
-- name: Create values file
-  template:
-    src: values.j2
-    dest: /tmp/oscar-values.yaml
-
-- name: Add GRyCAP helm repo
-  command: helm repo add grycap https://grycap.github.io/helm-charts/
-  environment:
-    KUBECONFIG: "{{ kubeconfig_path }}"
-
-- name: "Update helm repositories"
-  command: helm repo update
-  environment:
-    KUBECONFIG: "{{ kubeconfig_path }}"
-
-- name: Create OSCAR services' namespace
-  block:
-  - template:
-      src: oscar-svc-ns.j2
-      dest: /tmp/oscar-svc-ns.yaml
-  - command: kubectl apply -f /tmp/oscar-svc-ns.yaml
-    environment:
-      KUBECONFIG: "{{ kubeconfig_path }}"
-
-- name: Install (or upgrade) the chart
-  command: helm upgrade oscar --install grycap/oscar --namespace oscar --create-namespace --values /tmp/oscar-values.yaml
-  environment:
-    KUBECONFIG: "{{ kubeconfig_path }}"
+- name: Install OSCAR
+  import_tasks: oscar_helm.yaml
 
 - name: Include monitoring tasks
   import_tasks: metrics.yaml
@@ -48,40 +22,14 @@
   import_tasks: kserve.yaml
   when: kserve_enable | bool
 
-- name: Download oscar-cli
-  block:
-  - set_fact:
-      oscar_cli_binary: "{{ 'oscar-cli-arm64' if ansible_architecture == 'aarch64' else 'oscar-cli' }}"
-  - get_url:
-      url: https://github.com/grycap/oscar-cli/releases/download/{{ oscar_cli_version }}/{{ oscar_cli_binary }}
-      dest: /usr/bin/oscar-cli
-      mode: '755'
-
-- name: Set OSCAR endpoint
-  block:
-  - set_fact:
-      oscar_endpoint: "https://{{ dns_host }}"
-    when:
-      - create_ingress == true or create_httproute == true
-      - dns_host != "''"
-  - set_fact:
-      oscar_endpoint: "https://{{ ansible_default_ipv4.address }}"
-    when:
-      - create_ingress == true or create_httproute == true
-      - dns_host == "''"
-  - set_fact:
-      oscar_endpoint: "http://{{ ansible_default_ipv4.address}}:{{ oscar_nodeport }}"
-    when:
-      - create_ingress == false
-      - create_httproute == false
-      - oscar_service_type == "NodePort"
-
-- name: Add the cluster to oscar-cli
-  command: oscar-cli cluster add oscar-cluster {{ oscar_endpoint }} {{ oscar_user }} {{ oscar_pass }} {{ "--disable-ssl" if dns_host == "''" else "" }}
-  when: oscar_endpoint is defined
+- name: Install OSCAR-cli
+  import_tasks: oscar-cli.yaml
 
 - name: Apply Kueue configuration
   command: helm upgrade --install kueue oci://registry.k8s.io/kueue/charts/kueue  --version={{ kueue_version }}  --namespace  kueue-system  --create-namespace  --wait --timeout 300s
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
   when: kueue_enable | bool
+
+- name: Install calico
+  import_tasks: calico.yaml
