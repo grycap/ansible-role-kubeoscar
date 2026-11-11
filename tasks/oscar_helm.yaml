@@ -1,0 +1,29 @@
+---
+- name: Add GRyCAP helm repo
+  command: helm repo add grycap https://grycap.github.io/helm-charts/
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: "Update helm repositories"
+  command: helm repo update
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: Create values file
+  template:
+    src: values.j2
+    dest: /var/tmp/oscar-values.yaml
+
+- name: Create OSCAR services' namespace
+  block:
+  - template:
+      src: oscar-svc-ns.j2
+      dest: /var/tmp/oscar-svc-ns.yaml
+  - command: kubectl apply -f /var/tmp/oscar-svc-ns.yaml
+    environment:
+      KUBECONFIG: "{{ kubeconfig_path }}"
+
+- name: Install (or upgrade) the chart
+  command: helm upgrade oscar --install grycap/oscar --namespace oscar --create-namespace --values /var/tmp/oscar-values.yaml
+  environment:
+    KUBECONFIG: "{{ kubeconfig_path }}"
