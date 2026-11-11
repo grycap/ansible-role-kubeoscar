@@ -30,6 +30,3 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
   when: kueue_enable | bool
-
-- name: Install calico
-  import_tasks: calico.yaml
