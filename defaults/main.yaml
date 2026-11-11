@@ -93,9 +93,6 @@ kueue_version: "0.17.4"
 kserve_enable: "false"
 kserve_version: "v0.21.0"
 
-# Configure calico (CNI)
-calico_version: "v3.28.2"
-
 prometheus_url: "http://prometheus-operator-kube-p-prometheus.monitoring.svc.cluster.local:90900"
 prometheus_cpu_query: '{% raw %}sum(increase(container_cpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",pod=~\"{{service}}.*\"}[{{range}}])) / 3600{% endraw %}'
 prometheus_gpu_query: '{% raw %}sum(increase(container_gpu_usage_seconds_total{namespace=~\"{{services_namespace}}.*\",pod=~\"{{service}}.*\"}[{{range}}])) / 3600{% endraw %}'
